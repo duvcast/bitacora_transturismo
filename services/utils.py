@@ -9,5 +9,5 @@ def next_weekday(date_target, weekday):
         days_ahead += 7
     return date_target + datetime.timedelta(days_ahead)
 
-# date_target = datetime.date(2022, 3, 31)
-# next_monday = next_weekday(date_target, 1)  # 0 = Monday, 1=Tuesday, 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday
+# date_target = datetime.date(2022, 3, 31) next_monday = next_weekday(date_target, 1)  # 0 = Monday, 1=Tuesday,
+# 2=Wednesday, 3=Thursday, 4=Friday, 5=Saturday, 6=Sunday
