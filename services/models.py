@@ -1,5 +1,6 @@
-from django.conf import settings
 from django.db import models
+
+from contratos.models import Contract
 
 
 # Create your models here.
@@ -16,21 +17,25 @@ class Service(models.Model):
     type_route = models.CharField(max_length=30, choices=TYPE_ROUTE, default=DEPARTURE, verbose_name="route type")
     start_date = models.DateTimeField(verbose_name="start date")
     end_date = models.DateTimeField(verbose_name="end date")
-    # bus = models.CharField(verbose_name="bus")
-    # relevate = models.CharField(verbose_name="Este va a ser el campo de relevo")
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="service",
-                                   verbose_name="created by", null=True)
+    # bus = models.CharField(verbose_name="bus") relevate = models.CharField(verbose_name="Este va a ser el campo de
+    # relevo") created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+    # related_name="services_author", verbose_name="created by", null=True)
+    contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name="services_contract")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
+
+    def __str__(self):
+        return self.route_name
 
 
 class Schedule(models.Model):
     start_hour = models.DateTimeField(verbose_name="start date")
     end_hour = models.DateTimeField(verbose_name="end hour")
     quantity_fleet = models.IntegerField(verbose_name="quantity fleet")
-    day = models.CharField(max_length="30", verbose_name="day")
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="service",
-                                   verbose_name="created by", null=True)
+    day = models.CharField(max_length=2, verbose_name="day")
+    service = models.ForeignKey("Service", on_delete=models.CASCADE, related_name="schedules_service")
+    # created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+    # related_name="schedules_author", verbose_name="created by", null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
 
