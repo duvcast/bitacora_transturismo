@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,12 +36,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third party apis
+    'tempus_dominus',
+    'widget_tweaks',
+
     # Local apps
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
     'contratos.apps.ContratosConfig',
-    'fleets.apps.FleetsConfig',
     'services.apps.ServicesConfig',
+    'administremos.apps.AdministremosConfig',
 
 ]
 
@@ -81,12 +85,14 @@ WSGI_APPLICATION = 'bitacora.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'juadznqy',
-        'USER': 'juadznqy',
-        'HOST': 'tuffi.db.elephantsql.com',
+        'NAME': 'transturismo',
+        'USER': 'melius',
+        # 'HOST': 'tuffi.db.elephantsql.com',
+        'HOST': 'localhost',
         # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
         'PORT': '5432',
-        'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
+        # 'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
+        'PASSWORD': 'amunozro8970'
     }
 }
 
@@ -125,6 +131,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -132,3 +140,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.User"
+
+# widget hour
+TEMPUS_DOMINUS_LOCALIZE = True
+TEMPUS_DOMINUS_TIME_FORMAT = 'HH:mm'
+
+LOGIN_REDIRECT_URL = "/contracts/"
+LOGOUT_REDIRECT_URL = "/login/"
