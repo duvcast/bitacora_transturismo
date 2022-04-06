@@ -17,6 +17,9 @@ class Bus(models.Model):
     class Meta:
         db_table = 'bus'
 
+    def __str__(self):
+        return f"{self.codigo} - {self.nombre}"
+
 
 class Empleado(models.Model):
     """ Modelo del empleado """
@@ -28,7 +31,35 @@ class Empleado(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
     class Meta:
-        db_table = 'empleado'
+        db_table = 'driver'
+
+    def __str__(self):
+        return self.nombre
+
+
+class BusDriver(models.Model):
+    bus = models.ForeignKey(Bus, on_delete=models.CASCADE, verbose_name="bus")
+    driver = models.ForeignKey(Empleado, on_delete=models.CASCADE, verbose_name="empleado")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
+
+    class Meta:
+        db_table = "bus_driver"
+
+    def __str__(self):
+        return f"{self.bus} - {self.driver}"
+
+
+class Relief(models.Model):
+    driver = models.OneToOneField(BusDriver, on_delete=models.CASCADE, verbose_name="driver")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
+
+    class Meta:
+        db_table = "relief"
+
+    def __str__(self):
+        return self.driver
 
 
 class ModosDeteccion(models.Model):
