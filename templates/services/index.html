@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Servicios{% endblock %}
+{% block content %}
+    <div class="wrapper" id="content_contracts">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Panel de Servicios</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard v1</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <h5 class="mb-2">Tipos de Servicios</h5>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Numero de Servicios</span>
+                                    <span class="info-box-number">1,410</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Contratos Ocasionales</span>
+                                    <span class="info-box-number">410</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Uploads</span>
+                                    <span class="info-box-number">13,648</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Likes</span>
+                                    <span class="info-box-number">93,139</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Esta es tu lista de Servicios</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" id="card-body">
+                                    <table id="services-table" class="table table-bordered table-striped">
+                                        <button type="button" class="btn btn-primary float-right btnCreateService">
+                                            <i class="fa-regular fa-plus mr-2"></i> Crear Nuevo Servicio
+                                        </button>
+                                        <thead>
+                                        <tr>
+                                            {#                                            <th>Numero de contrato</th>#}
+                                            <th>Nombre de la Ruta</th>
+                                            <th>Tipo de ruta</th>
+                                            <th>Fecha de Inicio</th>
+                                            <th>Fecha de Fin</th>
+                                            <th>Numero de contrato</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% load static %}
+                                        {% for service in services %}
+                                            <tr>
+                                                <td>{{ service.route_name }}</td>
+                                                <td>{{ service.type_route }}</td>
+                                                <td>{{ service.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                <td>{{ service.end_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                <td>{{ service.contract.number_contract }}</td>
+                                                <td>
+                                                    <a href="{% url 'services:detail_service' service.id %}"
+                                                       class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
+                                                    <a href="{% url 'services:index' %}"
+                                                       class="btn btn-info btn-xs"><i class="fa fa-pen"></i></a>
+                                                    <a href="#"
+                                                       class="btn btn-danger btn-xs"><i
+                                                            class="fa fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+
+            <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content ">
+                                <div class="modal-header">
+                                    <h5 class="modal-title " id="exampleModalLongTitle">Nuevo Contrato</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" id="form-create-service">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-3">
+                                                <label for="inputName">Nombre de la Ruta</label>
+                                                {{ form.route_name }}
+                                            </div>
+                                            <div class="form-group col-3">
+                                                <label for="inputStatus">Fecha de inicio</label>
+                                                {{ form.start_date }}
+                                            </div>
+                                            <div class="form-group col-3">
+                                                <label for="inputStatus">Fecha de fin</label>
+                                                {{ form.end_date }}
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <input type="submit" value="Crear Contrato"
+                                                       class="btn btn-primary float-right">
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- ./wrapper -->
+
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#services-table").DataTable({
+                responsive: true,
+                autoWidth: true
+            })
+
+        });
+        $('.btnCreateService').on('click', function () {
+            $('#exampleModalCenter').modal('show');
+        })
+
+
+        $('#form-create-contract').on('submit', function (e) {
+
+            e.preventDefault();
+            var serializedData = $(this).serialize();
+            $.ajax({
+                url: "{% url 'contracts:index' %}",
+                type: 'POST',
+                data: serializedData,
+                success: function () {
+                    location.reload();
+                    $('#exampleModalCenter').modal('hide');
+                }
+            })
+        })
+    </script>
+
+
+{% endblock %}
