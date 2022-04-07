@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content-wrapper">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+        {% endif %}
+
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Actualizar Servicio</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Actualizar Servicio</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-8 ">
+                    <div class="card card-primary">
+                        <div class="card-header">
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'services:update_service' service.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="inputName">Nombre de la ruta o servicio</label>
+                                    {{ form.route_name }}
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="inputClientCompany">Fecha de inicio</label>
+                                        {{ form.start_date }}
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="inputProjectLeader">Fecha Final</label>
+                                        {{ form.end_date }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <input type="submit" value="Actualizar Servicio"
+                                               class="btn btn-primary float-right">
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <!-- /.content -->
+{% endblock %}

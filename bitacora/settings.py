@@ -9,8 +9,12 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
+import sys
 from pathlib import Path
+
+import dj_database_url
+from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wwo@yc+_e3!&ok!$#2+($zp=&18$_nbl7o4p1mbml6hd!^$!kj'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # Application definition
 
@@ -36,12 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # third party apis
+    'tempus_dominus',
+    'widget_tweaks',
+
     # Local apps
     'main.apps.MainConfig',
     'users.apps.UsersConfig',
     'contratos.apps.ContratosConfig',
-    'fleets.apps.FleetsConfig',
     'services.apps.ServicesConfig',
+    'administremos.apps.AdministremosConfig',
 
 ]
 
@@ -78,17 +86,28 @@ WSGI_APPLICATION = 'bitacora.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'juadznqy',
-        'USER': 'juadznqy',
-        'HOST': 'tuffi.db.elephantsql.com',
-        # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
-        'PORT': '5432',
-        'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+
+if DEVELOPMENT_MODE is True:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'transturismo',
+            'USER': 'melius',
+            # 'HOST': 'tuffi.db.elephantsql.com',
+            'HOST': 'localhost',
+            # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
+            'PORT': '5432',
+            # 'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
+            'PASSWORD': 'amunozro8970'
+        }
     }
-}
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -125,6 +144,8 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -132,3 +153,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "users.User"
+
+# widget hour
+TEMPUS_DOMINUS_LOCALIZE = True
+TEMPUS_DOMINUS_TIME_FORMAT = 'HH:mm'
+
+LOGIN_REDIRECT_URL = "/contracts/"
+LOGOUT_REDIRECT_URL = "/login/"
