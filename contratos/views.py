@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 
-from contratos.forms import FixedContractForm, FixedContractEditForm
-from contratos.models import FixedContract, Spreadsheet
+from contratos.forms import FixedContractForm, FixedContractEditForm, OccasionalContractForm
+from contratos.models import FixedContract, Spreadsheet, OccasionalContract
 from services.forms import ServiceForm
 from services.models import Service
 
@@ -59,7 +59,7 @@ def spreadsheet(request, pk):
     return render(request, 'contratos/spreadsheet.html', context)
 
 
-class ContractUpdateView(UpdateView):
+class ContractFixedUpdateView(UpdateView):
     model = FixedContract
     form_class = FixedContractEditForm
     success_url = reverse_lazy('contracts:index_contract_fixed')
@@ -68,5 +68,34 @@ class ContractUpdateView(UpdateView):
 
 class ContractDeleteView(DeleteView):
     model = FixedContract
-    success_url = reverse_lazy('contracts:index')
+    success_url = reverse_lazy('contracts:index_contract_fixed')
     template_name = 'contratos/delete_contract.html'
+
+
+def index_contracts_occasional(request):
+    if request.method == 'POST':
+        form = OccasionalContractForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse('ok')
+    else:
+        form = OccasionalContractForm()
+    contracts = OccasionalContract.objects.all().order_by('-created_at')
+    context = {
+        "contracts": contracts,
+        'form': form,
+    }
+    return render(request, 'contratos/index_contract_occasional.html', context)
+
+
+class ContractOccasionalUpdateView(UpdateView):
+    model = FixedContract
+    form_class = FixedContractEditForm
+    success_url = reverse_lazy('contracts:index_contract_occasional')
+    template_name = 'contratos/update_contract.html'
+
+
+class ContractOccasionalDeleteView(DeleteView):
+    model = OccasionalContract
+    success_url = reverse_lazy('contracts:index_contract_occasional')
+    template_name = 'contratos/delete_contract_occasional.html'

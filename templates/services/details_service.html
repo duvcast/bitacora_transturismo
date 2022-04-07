@@ -82,7 +82,8 @@
                                                 <td>
                                                     <a href="#"
                                                        class="btn btn-primary"><i class="fa fa-trash"></i> Editar</a>
-                                                    <a href="#" class="btn btn-danger"><i class="fa fa-trash"></i>
+                                                    <a href="{% url 'services:delete_schedule' horario.id %}"
+                                                       class="btn btn-danger"><i class="fa fa-trash"></i>
                                                         Eliminar</a>
                                                 </td>
                                             </tr>
@@ -187,6 +188,7 @@
                 data: serializedData,
                 success: function () {
                     $('#modal-create-horario').modal('hide');
+                    location.reload();
                 }
             })
         })

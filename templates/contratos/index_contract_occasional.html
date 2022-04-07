@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Contratos Fijos{% endblock %}
+{% block title %}Contratos Ocasionales{% endblock %}
 {% block content %}
     <div class="wrapper" id="content_contracts">
         <!-- Content Wrapper. Contains page content -->
@@ -10,12 +10,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Panel de Contratos Fijos</h1>
+                            <h1 class="m-0">Panel de Contratos Ocasionales</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
+                                <li class="breadcrumb-item active">Contratos Ocasionales</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -32,7 +32,7 @@
                                 <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
 
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Contratos Fijos</span>
+                                    <span class="info-box-text">Contratos Ocasionales</span>
                                     <span class="info-box-number">1,410</span>
                                 </div>
                                 <!-- /.info-box-content -->
@@ -45,7 +45,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Esta es tu lista de Contratos Fijos</h3>
+                                    <h3 class="card-title">Esta es tu lista de Contratos Ocasionales</h3>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body" id="card-body">
@@ -55,11 +55,17 @@
                                         </button>
                                         <thead>
                                         <tr>
-                                            <th>Fecha de firma</th>
-                                            <th>Fecha de Terminacion</th>
                                             <th>Contratante</th>
-                                            <th>Contratista</th>
-                                            <th>Tipo de Contrato</th>
+                                            <th>NIT</th>
+                                            <th>Dirección</th>
+                                            <th>Ciudad</th>
+                                            <th>Persona Contacto</th>
+                                            <th>Teléfono Contacto</th>
+                                            <th>Fecha Servicio</th>
+                                            <th>Capacidad</th>
+                                            <th>N° Planilla</th>
+                                            <th>Reserva</th>
+                                            <th>Nombre Gestor</th>
                                             <th>Acciones</th>
 
                                         </tr>
@@ -68,11 +74,17 @@
                                         {% load static %}
                                         {% for contract in contracts %}
                                             <tr>
-                                                <td>{{ contract.start_date|date:"SHORT_DATE_FORMAT" }}</td>
-                                                <td>{{ contract.end_date|date:"SHORT_DATE_FORMAT" }}</td>
                                                 <td>{{ contract.contractor_by.name_entity }}</td>
-                                                <td>{{ contract.contractor_for.name_entity }}</td>
-                                                <td><span class="text-red">{{ contract.type_contract }}</span></td>
+                                                <td>{{ contract.nit }}</td>
+                                                <td>{{ contract.address }}</td>
+                                                <td>{{ contract.city }}</td>
+                                                <td>{{ contract.contact_person }}</td>
+                                                <td>{{ contract.contact_phone }}</td>
+                                                <td>{{ contract.date_service|date:"SHORT_DATE_FORMAT" }}</td>
+                                                <td>{{ contract.capacity }}</td>
+                                                <td>{{ contract.nro_spreadsheet }}</td>
+                                                <td>{{ contract.reservation }}</td>
+                                                <td>{{ contract.manager }}</td>
                                                 <td>
 
                                                     <a href="{% url 'contracts:detail_contract_fixed' contract.id %}"
@@ -81,7 +93,7 @@
                                                        class="btn btn-info btn-xs">
                                                         <i class="fa fa-pen"></i>
                                                     </a>
-                                                    <a href="{% url 'contract:delete_contract' contract.id %}"
+                                                    <a href="{% url 'contract:delete_contract_occasional' contract.id %}"
                                                        class="btn btn-danger btn-xs"><i
                                                             class="fa fa-trash"></i></a>
                                                 </td>
@@ -126,18 +138,74 @@
                                                 {{ form.contractor_by }}
                                             </div>
                                             <div class="form-group col-6">
-                                                <label for="inputStatus">Contratante</label>
-                                                {{ form.contractor_for }}
+                                                <label for="inputStatus">NIT</label>
+                                                {{ form.nit }}
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-6">
-                                                <label for="inputClientCompany">Fecha de inicio</label>
-                                                {{ form.start_date }}
+                                                <label for="inputClientCompany">Direccion</label>
+                                                {{ form.address }}
                                             </div>
                                             <div class="form-group col-6">
-                                                <label for="inputProjectLeader">Fecha Final</label>
-                                                {{ form.end_date }}
+                                                <label for="inputProjectLeader">Ciudad</label>
+                                                {{ form.city }}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-6">
+                                                <label for="inputClientCompany">Persona Contacto</label>
+                                                {{ form.contact_person }}
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label for="inputProjectLeader">Telefono</label>
+                                                {{ form.contact_phone }}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-4">
+                                                <label for="inputClientCompany">Llegada</label>
+                                                {{ form.arrival }}
+                                            </div>
+                                            <div class="form-group col-2">
+                                                <label for="inputProjectLeader">Hora</label>
+                                                {{ form.hour }}
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="inputProjectLeader">Fecha de Servicio</label>
+                                                {{ form.date_service }}
+                                            </div>
+                                            <div class="form-group col-2">
+                                                <label for="inputProjectLeader">Capacidad</label>
+                                                {{ form.capacity }}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-2">
+                                                <label for="inputClientCompany">Ida</label>
+                                                {{ form.go }}
+                                            </div>
+                                            <div class="form-group col-3">
+                                                <label for="inputProjectLeader">Regreso</label>
+                                                {{ form.come_bak }}
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="inputClientCompany">N° de Planilla</label>
+                                                {{ form.nro_spreadsheet }}
+                                            </div>
+                                            <div class="form-group col-3">
+                                                <label for="inputProjectLeader">Reserva</label>
+                                                {{ form.reservation }}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-6">
+                                                <label for="inputClientCompany">Observaciones</label>
+                                                {{ form.observations }}
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label for="inputProjectLeader">Nombre de quien libera el servicio</label>
+                                                {{ form.manager }}
                                             </div>
                                         </div>
                                         <div class="row">
@@ -182,7 +250,7 @@
 
                 var serializedData = $(this).serialize();
                 $.ajax({
-                    url: "{% url 'contracts:index_contract_fixed' %}",
+                    url: "{% url 'contracts:index_contract_occasional' %}",
                     type: 'POST',
                     data: serializedData,
                     success: function () {

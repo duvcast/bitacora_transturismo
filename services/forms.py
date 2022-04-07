@@ -34,7 +34,6 @@ class ScheduleForm(forms.ModelForm):
     start_hour = forms.TimeField(
         widget=TimePicker(
             options={
-                'enabledHours': [9, 10, 11, 12, 13, 14, 15, 16],
                 'defaultDate': '1970-01-01T14:56:00'
             },
             attrs={
@@ -45,7 +44,6 @@ class ScheduleForm(forms.ModelForm):
     end_hour = forms.TimeField(
         widget=TimePicker(
             options={
-                'enabledHours': [9, 10, 11, 12, 13, 14, 15, 16],
                 'defaultDate': '1970-01-01T14:56:00'
             },
             attrs={

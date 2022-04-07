@@ -76,3 +76,6 @@ class Manager(models.Model):
     last_name = models.CharField(max_length=150, verbose_name="last name")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

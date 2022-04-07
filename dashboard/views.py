@@ -4,7 +4,6 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.urls import reverse
 
-from contratos.forms import FixedContractForm
 from contratos.models import FixedContract
 from services.forms import ServiceForm
 from services.models import Service

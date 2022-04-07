@@ -55,10 +55,10 @@
                                                 <td>{{ service.start_date|date:"SHORT_DATE_FORMAT" }}</td>
                                                 <td>{{ service.end_date|date:"SHORT_DATE_FORMAT" }}</td>
                                                 <td>
-                                                    <a href="{% url 'services:detail_service' service.id %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                                                    <a href="{% url 'services:detail_service' service.id %}"
-                                                       class="btn btn-primary"><i class="fa fa-pen"></i></a>
-                                                    <a href="{% url 'services:delete_service' service.id %}" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                                                    <a href="{% url 'services:detail_service' service.id %}" class="btn btn-primary"><i class="fa fa-eye"></i> Ver Más</a>
+                                                    <a href="{% url 'services:update_service' service.id %}"
+                                                       class="btn btn-primary"><i class="fa fa-pen"></i> Editar</a>
+                                                    <a href="{% url 'services:delete_service' service.id %}" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</a>
                                                 </td>
                                             </tr>
                                         {% endfor %}

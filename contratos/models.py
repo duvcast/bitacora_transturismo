@@ -71,6 +71,9 @@ class OccasionalContract(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
 
+    def __str__(self):
+        return f"{self.contractor_by} - {self.manager.first_name} {self.manager.last_name}"
+
 
 class Spreadsheet(models.Model):
     number_spreadsheet = models.CharField(max_length=30, verbose_name="number")
