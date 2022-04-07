@@ -1,14 +1,13 @@
-from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
-# Create your views here.
-from django.urls import reverse
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 from contratos.models import FixedContract
-from services.forms import ServiceForm
 from services.models import Service
 
 
+# Create your views here.
+
+@login_required
 def index(request):
     contracts = FixedContract.objects.all()
     services = Service.objects.all()

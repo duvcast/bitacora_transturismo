@@ -71,7 +71,7 @@ class ContractDeleteView(DeleteView):
     success_url = reverse_lazy('contracts:index_contract_fixed')
     template_name = 'contratos/delete_contract.html'
 
-
+@login_required
 def index_contracts_occasional(request):
     if request.method == 'POST':
         form = OccasionalContractForm(request.POST)
