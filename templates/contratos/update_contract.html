@@ -41,40 +41,22 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="{% url 'contracts:update_contract' contract.pk %}" method="post">
+                            <form action="{% url 'contracts:update_contract' fixedcontract.id %}" method="post">
                                 {% csrf_token %}
                                 <div class="form-row">
-                                    <div class="form-group col-3">
-                                        <label for="inputName">Numero de contrato</label>
-                                        {{ form.number_contract }}
-                                    </div>
-                                    <div class="form-group col-3">
-                                        <label for="inputStatus">Tipo de Contrato</label>
-                                        {{ form.type_contract }}
-                                    </div>
-                                    <div class="form-group col-3">
+                                    <div class="form-group col-6">
                                         <label for="inputStatus">Contratista</label>
                                         {{ form.contractor_by }}
                                     </div>
-                                    <div class="form-group col-3">
+                                    <div class="form-group col-6">
                                         <label for="inputStatus">Contratante</label>
                                         {{ form.contractor_for }}
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-group col-6">
-                                        <label for="inputClientCompany">Origen</label>
-                                        {{ form.departure }}
-                                    </div>
-                                    <div class="form-group col-6">
-                                        <label for="inputProjectLeader">Destino</label>
-                                        {{ form.arrival }}
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-12">
-                                        <a href="#" class="btn btn-secondary">Cancelar</a>
+                                        <a href="{% url 'contracts:index_contract_fixed' %}" class="btn btn-secondary">Cancelar</a>
                                         <input type="submit" value="Actualizar" class="btn btn-primary float-right">
                                     </div>
                                 </div>

@@ -4,14 +4,14 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.urls import reverse
 
-from contratos.forms import ContractForm
-from contratos.models import Contract
+from contratos.forms import FixedContractForm
+from contratos.models import FixedContract
 from services.forms import ServiceForm
 from services.models import Service
 
 
 def index(request):
-    contracts = Contract.objects.all()
+    contracts = FixedContract.objects.all()
     services = Service.objects.all()
     context = {
         "contracts": contracts,

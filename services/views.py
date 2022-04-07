@@ -11,7 +11,6 @@ from services.models import Service, Schedule
 
 @login_required
 def index(request):
-    # TODO: corregir, asociar un contrato con este servicio, hay que modificar el formulation
     if request.is_ajax and request.method == 'POST':
         form = ServiceForm(request.POST)
         if form.is_valid():
@@ -19,7 +18,6 @@ def index(request):
             return HttpResponse('ok')
     else:
         form = ServiceForm()
-    # TODO: filed number_contrast does not exist in the contract model
     services = Service.objects.all().order_by('-created_at')
     context = {
         "services": services,

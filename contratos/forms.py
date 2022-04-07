@@ -1,22 +1,17 @@
 from django import forms
 
-from .models import Contract
+from .models import FixedContract
 
 
 class DatePickerInput(forms.DateInput):
     input_type = 'date'
 
 
-class ContractForm(forms.ModelForm):
+class FixedContractForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['type_contract'].widget.attrs.update({'class': 'form-control'})
-        self.fields['number_contract'].widget.attrs.update({'class': 'form-control'})
         self.fields['contractor_by'].widget.attrs.update({'class': 'form-control'})
         self.fields['contractor_for'].widget.attrs.update({'class': 'form-control'})
-        self.fields['type_contract'].widget.attrs.update({'class': 'form-control'})
-        self.fields['arrival'].widget.attrs.update({'class': 'form-control'})
-        self.fields['departure'].widget.attrs.update({'class': 'form-control'})
         self.fields['start_date'].widget.attrs.update({'class': 'form-control'})
         self.fields['end_date'].widget.attrs.update({'class': 'form-control'})
 
@@ -24,30 +19,16 @@ class ContractForm(forms.ModelForm):
     end_date = forms.DateField(widget=DatePickerInput)
 
     class Meta:
-        model = Contract
-        fields = (
-            'number_contract', 'type_contract', 'contractor_by', 'contractor_for', 'start_date', 'end_date', 'arrival',
-            'departure')
+        model = FixedContract
+        fields = ('contractor_by', 'contractor_for', 'start_date', 'end_date')
 
 
-class UpdateContractForm(forms.ModelForm):
+class FixedContractEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['type_contract'].widget.attrs.update({'class': 'form-control'})
-        self.fields['number_contract'].widget.attrs.update({'class': 'form-control'})
         self.fields['contractor_by'].widget.attrs.update({'class': 'form-control'})
         self.fields['contractor_for'].widget.attrs.update({'class': 'form-control'})
-        self.fields['type_contract'].widget.attrs.update({'class': 'form-control'})
-        self.fields['arrival'].widget.attrs.update({'class': 'form-control'})
-        self.fields['departure'].widget.attrs.update({'class': 'form-control'})
-        self.fields['start_date'].widget.attrs.update({'class': 'form-control'})
-        self.fields['end_date'].widget.attrs.update({'class': 'form-control'})
-
-    start_date = forms.DateField(widget=DatePickerInput)
-    end_date = forms.DateField(widget=DatePickerInput)
 
     class Meta:
-        model = Contract
-        fields = (
-            'number_contract', 'type_contract', 'contractor_by', 'contractor_for', 'start_date', 'end_date', 'arrival',
-            'departure')
+        model = FixedContract
+        fields = ('contractor_by', 'contractor_for',)

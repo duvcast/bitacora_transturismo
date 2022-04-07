@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 
 from administremos.models import Bus
-from contratos.models import Contract
+from contratos.models import FixedContract
 
 
 # Create your models here.
@@ -14,12 +14,14 @@ class Service(models.Model):
     route_name = models.CharField(max_length=300, verbose_name="name service or route")
     start_date = models.DateTimeField(verbose_name="start date")
     end_date = models.DateTimeField(verbose_name="end date")
-    # bus = models.CharField(verbose_name="bus") relevate = models.CharField(verbose_name="Este va a ser el campo de
-    # relevo") created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
-    # related_name="services_author", verbose_name="created by", null=True)
-    contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name="services_contract")
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+                                   related_name="services_author", verbose_name="created by", null=True)
+    contract = models.ForeignKey(FixedContract, on_delete=models.CASCADE, related_name="services_contract")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
+
+    class Meta:
+        ordering = ('created_at',)
 
     def __str__(self):
         return self.route_name

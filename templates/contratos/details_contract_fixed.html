@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Contrato Numero {{ contract.number_contract }}{% endblock %}
+{% block title %}Contrato {{ contract.contractor_for }}{% endblock %}
 {% block content %}
     <div class="wrapper">
 
@@ -11,12 +11,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Contrato N° {{ contract.number_contract }}</h1>
+                            <h1 class="m-0">Contrato {{ contract.contractor_for }}</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
+                                <li class="breadcrumb-item active">Contratos Fijos</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -31,13 +31,13 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Esta es tu lista de servicios</h3>
+                                    <h3 class="card-title">Esta es tu lista de Servicios</h3>
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <table id="services-table" class="table table-bordered table-striped">
                                         <button type="button" class="btn btn-primary float-right btnCreateService">
-                                            <i class="fa-regular fa-plus mr-2"></i> Crear Nuevo Servicio
+                                            <i class="fa fa-plus mr-2"></i> Crear Nuevo Servicio
                                         </button>
                                         <thead>
                                         <tr>
@@ -151,12 +151,13 @@
             e.preventDefault();
             var serializedData = $(this).serialize();
             $.ajax({
-                url: "{% url 'contracts:detail_contract' contract.id %}",
+                url: "{% url 'contracts:detail_contract_fixed' contract.id %}",
                 type: 'POST',
                 data: serializedData,
                 success: function () {
                     location.reload();
                     $('#modal-create-service').modal('hide');
+                    location.reload();
                 }
             })
         })
