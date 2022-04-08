@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contratistas y Contratantes{% endblock %}
+{% block content %}
+    <div class="wrapper" id="content_contracts">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Panel de Contratantes y Contratistas</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Dashboard v1</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <h5 class="mb-2">Detalles</h5>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Cantidad de Contratantes</span>
+                                    <span class="info-box-number">1,410</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Cantidad de Contratatistas</span>
+                                    <span class="info-box-number">1,410</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Contratantes y Contratistas</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" id="card-body">
+                                    <table id="contracts-table" class="table table-bordered table-striped">
+                                        <button type="button" class="btn btn-primary float-right btnCreateContract">
+                                            <i class="fa fa-plus mr-2"></i>Nuevo Usuario
+                                        </button>
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre Entidad</th>
+                                            <th>Telefono</th>
+                                            <th>Extension</th>
+                                            <th>NIT</th>
+                                            <th>Rol</th>
+                                            <th>Fecha de Creacion</th>
+                                            <th>Acciones</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% load static %}
+                                        {% for user_contract in users_contacts %}
+                                            <tr>
+                                                <td>{{ user_contract.name_entity }}</td>
+                                                <td>{{ user_contract.phone }}</td>
+                                                <td>{{ user_contract.extension }}</td>
+                                                <td>{{ user_contract.nit }}</td>
+                                                <td><span class="red">{{ user_contract.type_contractor }}</span></td>
+                                                <td>{{ user_contract.created_at|date:"D d M Y H:i" }}</td>
+                                                <td>
+                                                    <a href="{% url 'contracts:update_users_contract' user_contract.id %}"
+                                                       class="btn btn-primary">
+                                                        <i class="fa fa-pen"></i> Editar
+                                                    </a>
+                                                    <a href="{% url 'contracts:delete_users_contract' user_contract.id %}"
+                                                       class="btn btn-danger disabled"><i
+                                                            class="fa fa-trash"></i>Eliminar</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+
+            <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content ">
+                                <div class="modal-header">
+                                    <h5 class="modal-title " id="exampleModalLongTitle">Nuevo Contrato</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" id="form-create-contract">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <div class="form-group col-12">
+                                                <label for="inputStatus">Nombre de la Entidad</label>
+                                                {{ form.name_entity }}
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-6">
+                                                <label for="inputClientCompany">Telefono</label>
+                                                {{ form.phone }}
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label for="inputClientCompany">Extension</label>
+                                                {{ form.extension }}
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-6">
+                                                <label for="inputProjectLeader">NIT</label>
+                                                {{ form.nit }}
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label for="inputProjectLeader">Role</label>
+                                                {{ form.type_contractor }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <input type="submit" value="Crear Contrato"
+                                                       class="btn btn-primary float-right">
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- ./wrapper -->
+
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
+
+    <script>
+
+        $(function () {
+            $('#contracts-table').DataTable({
+                responsive: true,
+                autoWidth: true
+            });
+            $('.btnCreateContract').on('click', function () {
+                $('#exampleModalCenter').modal('show');
+            });
+            $('.btnEditContract').on('click', function () {
+                $('#exampleModalCenter').modal('show');
+            });
+            $('#form-create-contract').on('submit', function (e) {
+
+                e.preventDefault();
+
+                var serializedData = $(this).serialize();
+                $.ajax({
+                    url: "{% url 'contracts:users_contract' %}",
+                    type: 'POST',
+                    data: serializedData,
+                    success: function () {
+                        $('#exampleModalCenter').modal('hide');
+                        location.reload();
+                    }
+                })
+            })
+        })
+
+
+    </script>
+
+
+{% endblock %}

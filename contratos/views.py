@@ -4,8 +4,8 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 
-from contratos.forms import FixedContractForm, FixedContractEditForm, OccasionalContractForm
-from contratos.models import FixedContract, Spreadsheet, OccasionalContract
+from contratos.forms import FixedContractForm, FixedContractEditForm, OccasionalContractForm, USerContractForm
+from contratos.models import FixedContract, Spreadsheet, OccasionalContract, UserContractor
 from services.forms import ServiceForm
 from services.models import Service
 
@@ -71,6 +71,7 @@ class ContractDeleteView(DeleteView):
     success_url = reverse_lazy('contracts:index_contract_fixed')
     template_name = 'contratos/delete_contract.html'
 
+
 @login_required
 def index_contracts_occasional(request):
     if request.method == 'POST':
@@ -99,3 +100,35 @@ class ContractOccasionalDeleteView(DeleteView):
     model = OccasionalContract
     success_url = reverse_lazy('contracts:index_contract_occasional')
     template_name = 'contratos/delete_contract_occasional.html'
+
+
+@login_required()
+def users_contract(request):
+    if request.method == 'POST':
+        form = USerContractForm(request.POST)
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.created_by = request.user
+            new_form.save()
+            return HttpResponse('ok')
+    else:
+        form = USerContractForm()
+    users_contracts = UserContractor.objects.all()
+    context = {
+        'users_contacts': users_contracts,
+        'form': form,
+    }
+    return render(request, 'contratos/index_users_contracts.html', context)
+
+
+class UserContractUpdateView(UpdateView):
+    model = UserContractor
+    form_class = USerContractForm
+    success_url = reverse_lazy('contracts:users_contract')
+    template_name = 'contratos/update_users_contract.html'
+
+
+class UserContractorDeleteView(DeleteView):
+    model = UserContractor
+    success_url = reverse_lazy('contracts:users_contract')
+    template_name = 'contratos/delete_user_contract.html'
