@@ -1,13 +1,13 @@
 import logging
 import requests
 
-from .models import Empleado, Bus, Sintomas, ModosDeteccion, LugaresOperacion, VariablesControl
+from .models import Driver, Bus, Symptom, DetectionMode, OperationPlace, ControlVariable
 
-url_root = "https://bitakora-patio.meliusid.app/"
+url_root = "https://bitakora-patio.meliusid.app"
 
 
 def make_login():
-    url_login = f"{url_root}auth/login"
+    url_login = f"{url_root}/auth/login"
     credentials = {
         "email": "melius@meliusid.com",
         "password": "Melius2020+*&"
@@ -19,12 +19,12 @@ def make_login():
 
 def get_data(query):
     token = make_login()
-    url = f"{url_root}graphql"
+    url = f"{url_root}/graphql"
     header = {'Authorization': token}
     return requests.request("POST", url=url, headers=header, json={'query': query}).json()
 
 
-def get_empleado():
+def get_driver():
     query = """query{
         empleadosAdministremos{
             idEmpleado
@@ -33,18 +33,18 @@ def get_empleado():
             nombre
             }
         }"""
-    response_empleado = get_data(query)
-    for empleados in response_empleado["data"]["empleadosAdministremos"]:
-        empleado_model = Empleado()
-        empleado = Empleado.objects.filter(id_empleado=empleados["idEmpleado"]).exists()
-        if empleado:
-            print(f"el registro de empleado: {empleados['idEmpleado']} existe")
+    response_driver = get_data(query)
+    for drivers in response_driver["data"]["empleadosAdministremos"]:
+        driver_model = Driver()
+        driver = Driver.objects.filter(id_driver=drivers["idEmpleado"]).exists()
+        if driver:
+            print(f"driver: {driver['idEmpleado']} already exists")
             continue
-        empleado_model.id_empleado = empleados["idEmpleado"]
-        empleado_model.nombre = empleados["nombre"]
-        empleado_model.codigo = empleados["codigo"]
-        empleado_model.nro_identificacion = empleados["nroIdentificacion"]
-        empleado_model.save()
+        driver_model.id_driver = drivers["idEmpleado"]
+        driver_model.name = drivers["nombre"]
+        driver_model.code = drivers["codigo"]
+        driver_model.nro_identification = drivers["nroIdentificacion"]
+        driver_model.save()
 
 
 def get_buses():
@@ -61,20 +61,20 @@ def get_buses():
     response_bus = get_data(query)
     for buses in response_bus["data"]["busesAdministremos"]:
         bus_model = Bus()
-        bus = Bus.objects.filter(id_activo=buses["idActivo"]).exists()
+        bus = Bus.objects.filter(id_active=buses["idActivo"]).exists()
         if bus:
-            print(f"el registro de bus: {buses['idActivo']} existe")
+            print(f"Bus: {buses['idActivo']} already exists")
             continue
-        bus_model.id_activo = buses["idActivo"]
-        bus_model.nombre = buses["nombre"]
-        bus_model.codigo = buses["codigo"]
-        bus_model.placa = buses["placa"]
-        bus_model.marca = buses["marca"]
-        bus_model.modelo = buses["modelo"]
+        bus_model.id_active = buses["idActivo"]
+        bus_model.name = buses["nombre"]
+        bus_model.code = buses["codigo"]
+        bus_model.plate = buses["placa"]
+        bus_model.brand = buses["marca"]
+        bus_model.model = buses["modelo"]
         bus_model.save()
 
 
-def get_modo_deteccion():
+def get_detection_mode():
     query = """query{
     modosDeteccionAdministremos{
         idModoDeteccion
@@ -82,18 +82,18 @@ def get_modo_deteccion():
         codigo
         }
     }"""
-    response_modo_deteccion = get_data(query)
-    for mdeteccion in response_modo_deteccion["data"]["modosDeteccionAdministremos"]:
-        modo_deteccion_model = ModosDeteccion()
-        if ModosDeteccion.objects.filter(id_modo_deteccion=mdeteccion["idModoDeteccion"]).exists():
+    response_detection_mode = get_data(query)
+    for mdetection in response_detection_mode["data"]["modosDeteccionAdministremos"]:
+        model_detection_model = DetectionMode()
+        if DetectionMode.objects.filter(id_detection_mode=mdetection["idModoDeteccion"]).exists():
             continue
-        modo_deteccion_model.id_modo_deteccion = mdeteccion["idModoDeteccion"]
-        modo_deteccion_model.nombre = mdeteccion["nombre"]
-        modo_deteccion_model.codigo = mdeteccion["codigo"]
-        modo_deteccion_model.save()
+        model_detection_model.id_detection_mode = mdetection["idModoDeteccion"]
+        model_detection_model.name = mdetection["nombre"]
+        model_detection_model.code = mdetection["codigo"]
+        model_detection_model.save()
 
 
-def get_sintomas():
+def get_symptom():
     query = """query{
     sintomasAdministremos{
         idSintoma
@@ -101,18 +101,18 @@ def get_sintomas():
         codigo
         }
     }"""
-    response_sintoma = get_data(query)
-    for sintoma in response_sintoma["data"]["sintomasAdministremos"]:
-        sintomas_model = Sintomas()
-        if Sintomas.objects.filter(id_sintoma=sintoma["idSintoma"]).exists():
+    response_symptom = get_data(query)
+    for symptom in response_symptom["data"]["sintomasAdministremos"]:
+        symptom_model = Symptom()
+        if Symptom.objects.filter(id_symptom=symptom["idSintoma"]).exists():
             continue
-        sintomas_model.id_sintoma = sintoma["idSintoma"]
-        sintomas_model.nombre = sintoma["nombre"]
-        sintomas_model.codigo = sintoma["codigo"]
-        sintomas_model.save()
+        symptom_model.id_symptom = symptom["idSintoma"]
+        symptom_model.name = symptom["nombre"]
+        symptom_model.code = symptom["codigo"]
+        symptom_model.save()
 
 
-def get_lugares_operacion():
+def get_operation_place():
     query = """query{
     lugaresOperacionAdministremos{
         idLugarOperacion
@@ -120,18 +120,18 @@ def get_lugares_operacion():
         nombre
     }
     }"""
-    response_lugar_operacion = get_data(query)
-    for lugar_operacion in response_lugar_operacion["data"]["lugaresOperacionAdministremos"]:
-        lugares_operacion_model = LugaresOperacion()
-        if LugaresOperacion.objects.filter(id_lugar_operacion=lugar_operacion["idLugarOperacion"]).exists():
+    response_operation_place = get_data(query)
+    for operation_place in response_operation_place["data"]["lugaresOperacionAdministremos"]:
+        operation_place_model = OperationPlace()
+        if OperationPlace.objects.filter(id_operation_place=operation_place["idLugarOperacion"]).exists():
             continue
-        lugares_operacion_model.id_lugar_operacion = lugar_operacion["idLugarOperacion"]
-        lugares_operacion_model.nombre = lugar_operacion["nombre"]
-        lugares_operacion_model.codigo = lugar_operacion["codigo"]
-        lugares_operacion_model.save()
+        operation_place_model.id_operation_place = operation_place["idLugarOperacion"]
+        operation_place_model.name = operation_place["nombre"]
+        operation_place_model.code = operation_place["codigo"]
+        operation_place_model.save()
 
 
-def get_variable_control():
+def get_control_variable():
     query = """query{
     variablesControlAdministremos{
         idVariableControl
@@ -139,12 +139,12 @@ def get_variable_control():
         nombre
     }
     }"""
-    response_variable_control = get_data(query)
-    for variable_control in response_variable_control["data"]["variablesControlAdministremos"]:
-        variable_control_model = VariablesControl()
-        if VariablesControl.objects.filter(id_variable_control=variable_control["idVariableControl"]).exists():
+    response_control_variable = get_data(query)
+    for control_variable in response_control_variable["data"]["variablesControlAdministremos"]:
+        control_variable_model = ControlVariable()
+        if ControlVariable.objects.filter(id_control_variable=control_variable["idVariableControl"]).exists():
             continue
-        variable_control_model.id_variable_control = variable_control["idVariableControl"]
-        variable_control_model.nombre = variable_control["nombre"]
-        variable_control_model.codigo = variable_control["codigo"]
-        variable_control_model.save()
+        control_variable_model.id_control_variable = control_variable["idVariableControl"]
+        control_variable_model.name = control_variable["nombre"]
+        control_variable_model.code = control_variable["codigo"]
+        control_variable_model.save()

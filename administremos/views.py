@@ -1,25 +1,20 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render
 
+from .models import Bus, Driver
 from .forms import BusDriverForm
-from .models import Bus, Empleado, BusDriver
-from .services import get_empleado, get_lugares_operacion, get_modo_deteccion, get_sintomas, get_variable_control, \
-    get_buses
-
-
-def index(request):
-    get_empleado()
-    get_buses()
-    get_lugares_operacion()
-    get_sintomas()
-    get_variable_control()
-    get_modo_deteccion()
-    return HttpResponse("Hola")
+from .services import get_driver, get_symptom, get_detection_mode, get_buses
 
 
 @login_required
 def bus(request):
+    # if request.method == "POST":
+    #     form = BusDriverForm(request.POST)
+    #     new_form = form.save(commit=False)
+    get_symptom()
+    get_buses()
+    get_driver()
+    get_detection_mode()
     buses = Bus.objects.all()
     context = {
         'buses': buses,
@@ -28,27 +23,9 @@ def bus(request):
 
 
 @login_required
-def empleado(request):
-    empleados = Empleado.objects.all()
+def driver(request):
+    drivers = Driver.objects.all()
     context = {
-        'empleados': empleados,
+        'empleados': drivers,
     }
     return render(request, 'administremos/empleados.html', context)
-
-
-@login_required
-def bus_driver(request):
-    if request.method == "POST":
-        form = BusDriverForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('ok')
-    else:
-        form = BusDriverForm()
-
-    bus_drivers = BusDriver.objects.all()
-    context = {
-        'bus_drivers': bus_drivers,
-        'form': form,
-    }
-    return render(request, 'administremos/bus_driver.html', context)

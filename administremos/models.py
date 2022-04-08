@@ -5,12 +5,13 @@ class Bus(models.Model):
     """
     Modelo Bus
     """
-    id_activo = models.CharField(max_length=50)
-    nombre = models.CharField(max_length=200, null=True)
-    codigo = models.CharField(max_length=100, null=True)
-    placa = models.CharField(max_length=100, null=True)
-    marca = models.CharField(max_length=100, null=True)
-    modelo = models.CharField(max_length=100, null=True)
+    id_active = models.CharField(max_length=50)
+    name = models.CharField(max_length=200, null=True)
+    code = models.CharField(max_length=100, null=True)
+    plate = models.CharField(max_length=100, null=True)
+    brand = models.CharField(max_length=100, null=True)
+    model = models.CharField(max_length=100, null=True)
+    driver = models.ForeignKey('Driver', on_delete=models.DO_NOTHING, related_name='bus', null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
@@ -18,15 +19,15 @@ class Bus(models.Model):
         db_table = 'bus'
 
     def __str__(self):
-        return f"{self.codigo} - {self.nombre}"
+        return f"{self.code} - {self.name}"
 
 
-class Empleado(models.Model):
+class Driver(models.Model):
     """ Modelo del empleado """
-    nombre = models.CharField(max_length=200, null=True)
-    codigo = models.CharField(max_length=100, null=True)
-    id_empleado = models.CharField(max_length=50, null=True)
-    nro_identificacion = models.CharField(max_length=50, null=True)
+    name = models.CharField(max_length=200, null=True)
+    code = models.CharField(max_length=100, null=True)
+    id_driver = models.CharField(max_length=50, null=True)
+    nro_identification = models.CharField(max_length=50, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
@@ -34,24 +35,12 @@ class Empleado(models.Model):
         db_table = 'driver'
 
     def __str__(self):
-        return self.nombre
-
-
-class BusDriver(models.Model):
-    bus = models.ForeignKey(Bus, on_delete=models.CASCADE, verbose_name="bus")
-    driver = models.ForeignKey(Empleado, on_delete=models.CASCADE, verbose_name="empleado")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
-
-    class Meta:
-        db_table = "bus_driver"
-
-    def __str__(self):
-        return f"{self.bus} - {self.driver}"
+        return self.name
 
 
 class Relief(models.Model):
-    driver = models.OneToOneField(BusDriver, on_delete=models.CASCADE, verbose_name="driver")
+    driver = models.OneToOneField('Driver', on_delete=models.CASCADE, verbose_name="driver", related_name="driver")
+    created_date = models.DateTimeField(verbose_name="date creation")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
@@ -62,48 +51,48 @@ class Relief(models.Model):
         return self.driver
 
 
-class ModosDeteccion(models.Model):
-    nombre = models.CharField(max_length=200, null=True)
-    codigo = models.CharField(max_length=100, null=True)
-    id_modo_deteccion = models.CharField(max_length=200, null=True)
+class DetectionMode(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    code = models.CharField(max_length=100, null=True)
+    id_detection_mode = models.CharField(max_length=200, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
     class Meta:
-        db_table = 'modo_deteccion'
+        db_table = 'detection_mode'
 
 
-class VariablesControl(models.Model):
+class ControlVariable(models.Model):
     """ Modelo de Variable Control"""
-    nombre = models.CharField(max_length=200, null=True)
-    codigo = models.CharField(max_length=100, null=True)
-    id_variable_control = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=200, null=True)
+    code = models.CharField(max_length=100, null=True)
+    id_control_variable = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
     class Meta:
-        db_table = 'variables_control'
+        db_table = 'control_variable'
 
 
-class Sintomas(models.Model):
+class Symptom(models.Model):
     """Modelo de Sintomas"""
     nombre = models.CharField(max_length=200, null=True)
     codigo = models.CharField(max_length=100, null=True)
-    id_sintoma = models.CharField(max_length=100, null=True)
+    id_symptom = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
     class Meta:
-        db_table = 'sintomas'
+        db_table = 'symptom'
 
 
-class LugaresOperacion(models.Model):
+class OperationPlace(models.Model):
     """Modelo lugar de operacion"""
-    nombre = models.CharField(max_length=200, null=True)
-    codigo = models.CharField(max_length=100, null=True)
-    id_lugar_operacion = models.CharField(max_length=50, null=True)
+    name = models.CharField(max_length=200, null=True)
+    code = models.CharField(max_length=100, null=True)
+    id_operation_place = models.CharField(max_length=50, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
     class Meta:
-        db_table = 'lugares_operacion'
+        db_table = 'operation_place'
