@@ -14,8 +14,8 @@
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
+                                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                                <li class="breadcrumb-item active">Buses</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -25,7 +25,7 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <h5 class="mb-2">Estados de los Buses</h5>
+
                     <div class="row">
                         <div class="col-md-3 col-sm-6 col-12">
                             <div class="info-box">
@@ -58,7 +58,7 @@
                                 <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
 
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Buses Sin conductores</span>
+                                    <span class="info-box-text">Buses Ocupados</span>
                                     <span class="info-box-number">13,648</span>
                                 </div>
                                 <!-- /.info-box-content -->
@@ -71,7 +71,7 @@
                                 <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
 
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Otros Buses</span>
+                                    <span class="info-box-text">Buses Sin Conductor</span>
                                     <span class="info-box-number">93,139</span>
                                 </div>
                                 <!-- /.info-box-content -->
@@ -87,19 +87,19 @@
                                     <h3 class="card-title">Esta es tu lista de buses</h3>
                                 </div>
                                 <!-- /.card-header -->
-                                <!-- TODO: fix layout for pagination and search items in the table and filter icons -->
                                 <div class="card-body" id="card-body">
                                     <table id="contracts-table" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
                                             {#                                            <th>Numero de contrato</th>#}
-                                            <th>id del bus</th>
+                                            <th>id del Bus</th>
                                             <th>Nombre</th>
                                             <th>Código</th>
                                             <th>Placa</th>
                                             <th>Marca</th>
                                             <th>Modelo</th>
-
+                                            <th>Conductor Asignado</th>
+                                            <th>Acciones</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -107,24 +107,27 @@
                                         {% for bus in buses %}
                                             <tr>
                                                 {#                                                <td>{{ contracts.number_contract }}</td>#}
-                                                <td>{{ bus.id_activo }}</td>
-                                                <td>{{ bus.nombre }}</td>
-                                                <td>{{ bus.codigo }}</td>
-                                                <td>{{ bus.placa }}</td>
-                                                <td>{{ bus.marca }}</td>
-                                                {% if bus.modelo %}
-                                                    <td>{{ bus.marca }}</td>
+                                                <td>{{ bus.id_active }}</td>
+                                                <td>{{ bus.name }}</td>
+                                                <td>{{ bus.code }}</td>
+                                                <td>{{ bus.plate }}</td>
+                                                <td>{{ bus.brand }}</td>
+                                                {% if bus.model %}
+                                                    <td>{{ bus.model }}</td>
                                                 {% else %}
                                                     <td>Sin Modelo</td>
                                                 {% endif %}
-{#                                                <td>#}
-{#                                                    <a href="{% url 'contracts:detail_contract' contract.id %}"#}
-{#                                                       class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>#}
-{#                                                    <a href="{% url 'contracts:detail_contract' contract.id %}"#}
-{#                                                       class="btn btn-info btn-xs"><i class="fa fa-pen"></i></a>#}
-{#                                                    <a href="#" class="btn btn-danger btn-xs"><i#}
-{#                                                            class="fa fa-trash"></i></a>#}
-{#                                                </td>#}
+                                                <td>{{ bus.driver.name }}</td>
+                                                <td>
+                                                    <a href="#"
+                                                       class="btn btn-primary">
+                                                        <i class="fa fa-pen"></i> Editar
+                                                    </a>
+                                                    <a href="#"
+                                                       class="btn btn-danger"><i
+                                                            class="fa fa-trash"></i>Eliminar</a>
+                                                </td>
+
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -154,12 +157,13 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $("#contracts-table").DataTable({
+        var table = $("#contracts-table").DataTable({
                 responsive: true,
                 autoWidth: true
             })
 
+        $('#contracts-table tbody').on('click', 'tr', function () {
+            console.log(table.row(this).data());
         });
     </script>
 
