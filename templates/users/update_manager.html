@@ -14,12 +14,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Eliminar contrato</h1>
+                        <h1>Actualizar Gestor</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Eliminar contrato</li>
+                            <li class="breadcrumb-item active">Actualizar Gestor</li>
                         </ol>
                     </div>
                 </div>
@@ -39,13 +39,24 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form method="post">
+                            <form action="{% url 'users:update_manager' manager.id %}" method="post">
                                 {% csrf_token %}
-                                <p>Seguro quieres eliminar "{{ object }}"?</p>
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="inputClientCompany">Nombres</label>
+                                        {{ form.first_name }}
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="inputClientCompany">Apellidos</label>
+                                        {{ form.last_name }}
+                                    </div>
+
+                                </div>
+
                                 <div class="row">
                                     <div class="col-12">
-                                        <a href="{% url 'contracts:index_contract_fixed' %}" class="btn btn-secondary">Cancelar</a>
-                                        <input type="submit" value="Eliminar" class="btn btn-primary float-right">
+                                        <a href="{% url 'users:index_managers' %}" class="btn btn-secondary">Cancelar</a>
+                                        <input type="submit" value="Actualizar" class="btn btn-primary float-right">
                                     </div>
                                 </div>
                             </form>

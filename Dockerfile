@@ -11,8 +11,8 @@ COPY . /code/
 
 
 
-# docker-compose -f docker-compose-users.yml up -d --build
+# docker-compose -f docker-compose.yml up --build
 
-# docker build -t duvanmelius1/novo_usuarios:users_1 -f Dockerfile.users .
+# docker build -t duvanmelius1/novo_usuarios -f Dockerfile.
 
-# docker push duvanmelius1/novo_usuarios:users_1
+# docker push duvanmelius1/novo_usuarios

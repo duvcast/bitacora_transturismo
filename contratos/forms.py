@@ -1,6 +1,20 @@
 from django import forms
 
-from .models import FixedContract, OccasionalContract
+from .models import FixedContract, OccasionalContract, UserContractor
+
+
+class USerContractForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name_entity'].widget.attrs.update({'class': 'form-control'})
+        self.fields['phone'].widget.attrs.update({'class': 'form-control'})
+        self.fields['extension'].widget.attrs.update({'class': 'form-control'})
+        self.fields['nit'].widget.attrs.update({'class': 'form-control'})
+        self.fields['type_contractor'].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = UserContractor
+        fields = ('name_entity', 'phone', 'extension', 'nit', 'type_contractor')
 
 
 class DatePickerInput(forms.DateInput):

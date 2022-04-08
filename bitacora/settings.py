@@ -10,11 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-import sys
+# import sys
 from pathlib import Path
 
-import dj_database_url
-from django.core.management.utils import get_random_secret_key
+# import dj_database_url
+# from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
+SECRET_KEY = "qevma4a-m0yp^a1jbei-j@-(ltq1^91eozqm#o)ptcctb=eff#"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = "True"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -86,28 +87,22 @@ WSGI_APPLICATION = 'bitacora.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
-if DEVELOPMENT_MODE is True:
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
+            # 'NAME': 'transturismo',
             'NAME': 'transturismo',
-            'USER': 'melius',
+            'USER': 'doadmin',
             # 'HOST': 'tuffi.db.elephantsql.com',
-            'HOST': 'localhost',
+            'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
             # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
-            'PORT': '5432',
+            'PORT': '25060',
             # 'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
-            'PASSWORD': 'amunozro8970'
+            'PASSWORD': 'irrunras87percbh'
         }
     }
-elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-    if os.getenv("DATABASE_URL", None) is None:
-        raise Exception("DATABASE_URL environment variable not defined")
-    DATABASES = {
-        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-    }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
