@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% load static %}
 {% block title %}Buses{% endblock %}
 {% block content %}
@@ -91,14 +92,14 @@
                                     <table id="contracts-table" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
-                                            {#                                            <th>Numero de contrato</th>#}
-                                            <th>id del Bus</th>
                                             <th>Nombre</th>
                                             <th>Código</th>
                                             <th>Placa</th>
                                             <th>Marca</th>
                                             <th>Modelo</th>
                                             <th>Conductor Asignado</th>
+                                            <th>Relevo</th>
+                                            <th>Fecha de Relevo</th>
                                             <th>Acciones</th>
                                         </tr>
                                         </thead>
@@ -106,26 +107,44 @@
                                         {% load static %}
                                         {% for bus in buses %}
                                             <tr>
-                                                {#                                                <td>{{ contracts.number_contract }}</td>#}
-                                                <td>{{ bus.id_active }}</td>
                                                 <td>{{ bus.name }}</td>
                                                 <td>{{ bus.code }}</td>
-                                                <td>{{ bus.plate }}</td>
+                                                {% if bus.plate %}
+                                                    <td>{{ bus.plate }}</td>
+                                                {% else %}
+                                                    <td>SIN PLACA</td>
+                                                {% endif %}
                                                 <td>{{ bus.brand }}</td>
                                                 {% if bus.model %}
                                                     <td>{{ bus.model }}</td>
                                                 {% else %}
-                                                    <td>Sin Modelo</td>
+                                                    <td>SIN MODELO</td>
                                                 {% endif %}
-                                                <td>{{ bus.driver.name }}</td>
-                                                <td>
-                                                    <a href="#"
-                                                       class="btn btn-primary">
-                                                        <i class="fa fa-pen"></i> Editar
+                                                {% if bus.driver %}
+                                                    <td>{{ bus.driver.name }}</td>
+                                                {% else %}
+                                                    <td>NO ASIGNADO</td>
+                                                {% endif %}
+                                                {% if bus.driver.relief %}
+                                                    <td>{{ bus.driver.relief }}</td>
+                                                {% else %}
+                                                    <td>SIN RELEVO</td>
+                                                {% endif %}
+                                                {% if bus.driver.relief %}
+                                                    <td>{{ bus.driver.relief.created_date }}</td>
+                                                {% else %}
+                                                    <td>SIN RELEVO</td>
+                                                {% endif %}
+                                                <td class="col-buttons">
+                                                    <a href="#" class="btn btn-warning"
+                                                       onclick="showModalEdit({{ bus.id }},'{{ bus.name }}')">
+                                                        <i class="fa fa-pen"></i>
                                                     </a>
-                                                    <a href="#"
-                                                       class="btn btn-danger"><i
-                                                            class="fa fa-trash"></i>Eliminar</a>
+                                                    <a href="#" class="btn btn-danger {% if bus.driver == None %}
+                                                        disabled
+                                                    {% endif %} "
+                                                       onclick="showModalDelete({{ bus.id }})">
+                                                        <i class="fa fa-trash"></i></a>
                                                 </td>
 
                                             </tr>
@@ -147,6 +166,84 @@
                 <i class="fas fa-chevron-up"></i>
             </a>
         </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="modal fade" id="modal-assign-driver" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content ">
+                                <div class="modal-header">
+                                    <h5 class="modal-title " id="exampleModalLongTitle">Asignar Conductor</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" id="form-assign-driver">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="" id="id-bus-input" name="id">
+                                        <div class="form-row">
+                                            <div class="form-group col-6">
+                                                <label for="inputStatus">Bus</label>
+                                                {{ form.name|add_class:"disabled"|attr:'readonly'|attr:"id:input-bus-name" }}
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label for="inputStatus">Conductor</label>
+                                                {{ form.driver }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <input type="submit" value="Asignar Conductor"
+                                                       class="btn btn-primary float-right">
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="modal fade" id="modal-unassign-driver" tabindex="-1" role="dialog"
+                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+                            <div class="modal-content ">
+                                <div class="modal-header justify-content-center">
+                                    <h5 class="modal-title text-center" id="exampleModalLongTitle">¿Desvincular
+                                        Conductor?</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form method="post" id="form-delete-driver">
+                                        {% csrf_token %}
+                                        <input type="hidden" value="" id="id-bus-delete" name="id-bus">
+                                        <div class="row">
+                                            <div class="col-6 text-center">
+                                                <a href="#"
+                                                   class="btn btn-secondary" id="btn-close"><i class="fa fa-stop"></i>
+                                                    Cancelar</a>
+                                            </div>
+                                            <div class="col-6 text-center">
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fa fa-eraser"></i>
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
     <!-- /.content-wrapper -->
@@ -157,14 +254,67 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
 
     <script>
-        var table = $("#contracts-table").DataTable({
+
+        function getData() {
+            $("#contracts-table").DataTable({
                 responsive: true,
                 autoWidth: true
             })
+        }
 
-        $('#contracts-table tbody').on('click', 'tr', function () {
-            console.log(table.row(this).data());
+        getData();
+
+        {% comment %} $('#contracts-table tbody ').on('click', 'tr', function () {
+             console.log(table.row(this).data()[0]);
+         });{% endcomment %}
+
+        function showModalEdit(busId, nameBus) {
+            document.getElementById("id-bus-input").value = busId;
+            document.getElementById("input-bus-name").value = nameBus;
+            $('#modal-assign-driver').modal('show');
+        }
+
+        $('#form-assign-driver').on('submit', function (e) {
+
+            e.preventDefault();
+
+            var serializedData = $(this).serialize();
+            $.ajax({
+                url: "{% url 'administremos:buses' %}",
+                type: 'POST',
+                data: serializedData,
+                success: function () {
+                    $('#modal-assign-driver').modal('hide');
+                    location.reload();
+                }
+            })
+        })
+
+
+        function showModalDelete(busId) {
+            document.getElementById("id-bus-delete").value = busId;
+            $('#modal-unassign-driver').modal('show');
+        }
+
+        $('#form-delete-driver').on('submit', function (e) {
+
+            e.preventDefault();
+
+            var serializedData = $(this).serialize();
+            $.ajax({
+                url: "{% url 'administremos:remove_driver' %}",
+                type: 'POST',
+                data: serializedData,
+                success: function () {
+                    $('#modal-unassign-driver').modal('hide');
+                    location.reload();
+                }
+            })
         });
+        $('#btn-close').on('click', function () {
+            $('#modal-unassign-driver').modal('hide');
+        })
+
     </script>
 
 

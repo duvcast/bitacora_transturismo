@@ -97,6 +97,9 @@
                                             <th>Nombre</th>
                                             <th>Código</th>
                                             <th>N° de identificación</th>
+                                            <th>Relevo</th>
+                                            <th>Fecha de relevo</th>
+                                            <th>Acciones</th>
 
                                         </tr>
                                         </thead>
@@ -104,19 +107,20 @@
                                         {% load static %}
                                         {% for empleado in empleados %}
                                             <tr>
-                                                {#                                                <td>{{ contracts.number_contract }}</td>#}
-                                                <td>{{ empleado.id_empleado }}</td>
-                                                <td>{{ empleado.nombre }}</td>
-                                                <td>{{ empleado.codigo }}</td>
-                                                <td>{{ empleado.nro_identificacion }}</td>
-{#                                                <td>#}
-{#                                                    <a href="{% url 'contracts:detail_contract' contract.id %}"#}
-{#                                                       class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>#}
-{#                                                    <a href="{% url 'contracts:detail_contract' contract.id %}"#}
-{#                                                       class="btn btn-info btn-xs"><i class="fa fa-pen"></i></a>#}
-{#                                                    <a href="#" class="btn btn-danger btn-xs"><i#}
-{#                                                            class="fa fa-trash"></i></a>#}
-{#                                                </td>#}
+                                                <td>{{ empleado.id_driver }}</td>
+                                                <td>{{ empleado.name }}</td>
+                                                <td>{{ empleado.code }}</td>
+                                                <td>{{ empleado.nro_identification }}</td>
+                                                <td>{{ empleado.relief.driver }}</td>
+                                                <td>{{ empleado.relief.created_date }}</td>
+                                                <td class="col-buttons">
+                                                    <a href="#" class="btn btn-warning"
+                                                       onclick="">
+                                                        <i class="fa fa-pen"></i></a>
+                                                    <a href="#" class="btn btn-danger"
+                                                       onclick="">
+                                                        <i class="fa fa-trash"></i></a>
+                                                </td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>

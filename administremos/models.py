@@ -39,7 +39,7 @@ class Driver(models.Model):
 
 
 class Relief(models.Model):
-    driver = models.OneToOneField('Driver', on_delete=models.CASCADE, verbose_name="driver", related_name="driver")
+    driver = models.OneToOneField('Driver', on_delete=models.CASCADE, verbose_name="driver", related_name="relief")
     created_date = models.DateTimeField(verbose_name="date creation")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")

@@ -38,7 +38,7 @@ def get_driver():
         driver_model = Driver()
         driver = Driver.objects.filter(id_driver=drivers["idEmpleado"]).exists()
         if driver:
-            print(f"driver: {driver['idEmpleado']} already exists")
+            print(f"driver: {drivers['idEmpleado']} already exists")
             continue
         driver_model.id_driver = drivers["idEmpleado"]
         driver_model.name = drivers["nombre"]
