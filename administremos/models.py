@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -11,7 +12,7 @@ class Bus(models.Model):
     plate = models.CharField(max_length=100, null=True)
     brand = models.CharField(max_length=100, null=True)
     model = models.CharField(max_length=100, null=True)
-    driver = models.ForeignKey('Driver', on_delete=models.DO_NOTHING, related_name='bus', null=True)
+    driver = models.ForeignKey('Driver', on_delete=models.SET_NULL, related_name='bus', null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
@@ -49,6 +50,19 @@ class Relief(models.Model):
 
     def __str__(self):
         return self.driver
+
+
+class Novelty(models.Model):
+    bus = models.ForeignKey(Bus, on_delete=models.CASCADE, related_name="bus")
+    start_date = models.DateField(verbose_name="start date")
+    start_hour = models.TimeField(verbose_name="start hour")
+    end_date = models.DateField(verbose_name="end date")
+    end_hour = models.TimeField(verbose_name="end hour")
+    description = models.TextField(verbose_name="description")
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="novelty",
+                                   verbose_name="created by", null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
 
 class DetectionMode(models.Model):
