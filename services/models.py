@@ -21,6 +21,7 @@ class Service(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
 
     class Meta:
+        db_table = 'service'
         ordering = ('created_at',)
 
     def __str__(self):
@@ -49,6 +50,9 @@ class Schedule(models.Model):
 
     def __str__(self):
         return self.type_schedule
+
+    class Meta:
+        db_table = 'schedule'
 
 
 """

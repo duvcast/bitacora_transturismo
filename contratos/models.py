@@ -26,6 +26,9 @@ class UserContractor(models.Model):
     def __str__(self):
         return self.name_entity
 
+    class Meta:
+        db_table = 'user_contract'
+
 
 class FixedContract(models.Model):
     type_contract = models.CharField(max_length=20, default="FIJO")
@@ -35,7 +38,7 @@ class FixedContract(models.Model):
                                        related_name="contract_for")
     start_date = models.DateTimeField(verbose_name="start date")
     end_date = models.DateTimeField(verbose_name="end date")
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="fixedcontract",
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="fixed_contract",
                                    verbose_name="created by", null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
@@ -45,6 +48,9 @@ class FixedContract(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse('', kwargs={'pk': self.pk})
+
+    class Meta:
+        db_table = 'fixed_contract'
 
 
 class OccasionalContract(models.Model):
@@ -74,6 +80,9 @@ class OccasionalContract(models.Model):
     def __str__(self):
         return f"{self.contractor_by} - {self.manager.first_name} {self.manager.last_name}"
 
+    class Meta:
+        db_table = 'occasional_contract'
+
 
 class Spreadsheet(models.Model):
     number_spreadsheet = models.CharField(max_length=30, verbose_name="number")
@@ -83,3 +92,6 @@ class Spreadsheet(models.Model):
 
     def __str__(self):
         return self.number_spreadsheet
+
+    class Meta:
+        db_table = 'spreadsheet'
