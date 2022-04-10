@@ -28,9 +28,7 @@ SECRET_KEY = "qevma4a-m0yp^a1jbei-j@-(ltq1^91eozqm#o)ptcctb=eff#"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = "True"
 
-
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -91,19 +89,21 @@ WSGI_APPLICATION = 'bitacora.wsgi.application'
 
 
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            # 'NAME': 'transturismo',
-            'NAME': 'transturismo',
-            'USER': 'doadmin',
-            # 'HOST': 'tuffi.db.elephantsql.com',
-            'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
-            # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
-            'PORT': '25060',
-            # 'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
-            'PASSWORD': 'irrunras87percbh'
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'transturismo',
+        'NAME': 'juadznqy',
+        # 'NAME': 'transturismo',
+        # 'USER': 'doadmin',
+        'USER': 'juadznqy',
+        'HOST': 'tuffi.db.elephantsql.com',
+        # 'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
+        # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
+        # 'PORT': '25060',
+        'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
+        # 'PASSWORD': 'irrunras87percbh'
     }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
