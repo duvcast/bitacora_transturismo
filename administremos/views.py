@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
-from .forms import BusDriverForm
-from .models import Bus, Driver
+from .forms import BusDriverForm, NoveltyForm
+from .models import Bus, Driver, Novelty
 
 
 @login_required
@@ -49,3 +49,20 @@ def driver(request):
     return render(request, 'administremos/drivers.html', context)
 
 
+@login_required
+def novelties(request):
+    if request.method == "POST":
+        form = NoveltyForm(data=request.POST)
+        if form.is_valid():
+            new_form = form.save(commit=False)
+            new_form.created_by = request.user
+            new_form.save()
+            return HttpResponse('ok')
+    else:
+        form = NoveltyForm()
+    novelties_list = Novelty.objects.all()
+    context = {
+        'novelties': novelties_list,
+        'form': form,
+    }
+    return render(request, 'administremos/novelties.html', context)

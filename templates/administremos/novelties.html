@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 {% load static %}
-
 {% block head %}
     {# Include FontAwesome; required for icon display #}
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
@@ -20,10 +20,9 @@
     {# Django Tempus Dominus assets are included in `{{ form.media }}` #}
     {{ form.media }}
 {% endblock %}
-{% block title %}Service{% endblock %}
+{% block title %}Novedades{% endblock %}
 {% block content %}
-    <div class="wrapper">
-
+    <div class="wrapper" id="content_contracts">
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
@@ -31,12 +30,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Horarios para este servicio</h1>
+                            <h1 class="m-0">Panel de Novedades</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
+                                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                                <li class="breadcrumb-item active">Novedades</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -51,41 +50,47 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3 class="card-title">Esta es tu lista de horarios</h3>
+                                    <h3 class="card-title">Esta es tu lista de Novedades</h3>
                                 </div>
                                 <!-- /.card-header -->
-
-                                <div class="card-body">
-                                    <table id="horarios-table" class="table table-bordered table-striped">
-                                        <button type="button" class="btn btn-primary float-right btnCreateSchedule">
-                                            <i class="fa fa-plus mr-2"></i> Crear Nuevo Horario
+                                <div class="card-body" id="card-body">
+                                    <table id="contracts-table" class="table table-bordered table-striped">
+                                        <button type="button" class="btn btn-primary float-right btnCreateNovelty"
+                                                onclick="showModalCreateNovelty()">
+                                            <i class="fa fa-plus mr-2"></i> Nueva Novedad
                                         </button>
                                         <thead>
                                         <tr>
-                                            <th>Tipo de Horario</th>
+                                            <th>Bus</th>
+                                            <th>Fecha Inicio</th>
+                                            <th>Fecha Fin</th>
                                             <th>Hora Inicio</th>
                                             <th>Hora Final</th>
-                                            <th>Bus asignado</th>
-                                            <th>Conductor asignado</th>
+                                            <th>Description</th>
+                                            <th>Creado por</th>
                                             <th>Acciones</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-
-                                        {% for horario in horarios %}
+                                        {% load static %}
+                                        {% for novelty in novelties %}
                                             <tr>
-                                                <td>{{ horario.type_schedule }}</td>
-                                                <td>{{ horario.start_hour }}</td>
-                                                <td>{{ horario.end_hour }}</td>
-                                                <td>{{ horario.bus }}</td>
-                                                <td>{{ horario.bus.driver.name }}</td>
-                                                <td>
-                                                    <a href="#"
-                                                       class="btn btn-primary"><i class="fa fa-trash"></i> Editar</a>
-                                                    <a href="{% url 'services:delete_schedule' horario.id %}"
-                                                       class="btn btn-danger"><i class="fa fa-trash"></i>
-                                                        Eliminar</a>
+                                                <td>{{ novelty.bus.name }}</td>
+                                                <td>{{ novelty.start_date }}</td>
+                                                <td>{{ novelty.start_hour }}</td>
+                                                <td>{{ novelty.end_date }}</td>
+                                                <td>{{ novelty.end_hour }}</td>
+                                                <td>{{ novelty.description }}</td>
+                                                <td>{{ novelty.created_by.first_name }} {{ novelty.created_by.last_name }}</td>
+
+                                                <td class="col-buttons">
+                                                    <a href="" class="btn btn-warning">
+                                                        <i class="fa fa-pen"></i>
+                                                    </a>
+                                                    <a href="" class="btn btn-danger">
+                                                        <i class="fa fa-trash"></i></a>
                                                 </td>
+
                                             </tr>
                                         {% endfor %}
                                         </tbody>
@@ -108,42 +113,52 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="modal fade" id="modal-create-horario" tabindex="-1" role="dialog"
+                    <div class="modal fade" id="modal-create-novelty" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content ">
                                 <div class="modal-header">
-                                    <h5 class="modal-title " id="exampleModalLongTitle">Nuevo Horario</h5>
+                                    <h5 class="modal-title " id="exampleModalLongTitle">Crear Novedad</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="post" id="form-create-horario">
+                                    <form method="post" id="form-create-novelty">
                                         {% csrf_token %}
                                         <div class="form-row">
-                                            <div class="form-group col-6">
-                                                <label for="inputName">Tipo de Horario</label>
-                                                {{ form.type_schedule }}
-                                            </div>
-                                            <div class="form-group col-6">
-                                                <label for="inputName">Bus</label>
+                                            <div class="form-group col-12">
+                                                <label for="inputStatus">Bus</label>
                                                 {{ form.bus }}
                                             </div>
                                         </div>
                                         <div class="form-row">
-                                            <div class="form-group col-6">
-                                                <label for="inputClientCompany">Hora de Inicio</label>
+                                            <div class="form-group col-3">
+                                                <label for="startDate">Fecha Inicio</label>
+                                                {{ form.start_date }}
+                                            </div>
+                                            <div class="form-group col-3">
+                                                <label for="startHour">Hora Inicio</label>
                                                 {{ form.start_hour }}
                                             </div>
-                                            <div class="form-group col-6">
-                                                <label for="inputProjectLeader">Hora Final</label>
+                                            <div class="form-group col-3">
+                                                <label for="endDate">Fecha Final</label>
+                                                {{ form.end_date }}
+                                            </div>
+                                            <div class="form-group col-3">
+                                                <label for="endHour">Hora Final</label>
                                                 {{ form.end_hour }}
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-12">
+                                                <label for="description">Descripción</label>
+                                                {{ form.description }}
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <input type="submit" value="Crear Horario"
+                                                <input type="submit" value="Crear Novedad"
                                                        class="btn btn-primary float-right">
                                             </div>
                                         </div>
@@ -160,38 +175,41 @@
     <!-- /.content-wrapper -->
     <!-- ./wrapper -->
 
-
 {% endblock %}
 {% block javascript %}
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
 
     <script>
-        $(document).ready(function () {
-            $("#horarios-table").DataTable({
+
+        function getData() {
+            $("#contracts-table").DataTable({
                 responsive: true,
                 autoWidth: true
             })
+        }
 
-        });
-        $('.btnCreateSchedule').on('click', function () {
-            $('#modal-create-horario').modal('show');
-        })
+        getData();
 
+        function showModalCreateNovelty() {
+            $('#modal-create-novelty').modal('show');
+        }
 
-        $('#form-create-horario').on('submit', function (e) {
+        $('#form-create-novelty').on('submit', function (e) {
 
             e.preventDefault();
+
             var serializedData = $(this).serialize();
             $.ajax({
-                url: "{% url 'services:detail_service' service.id %}",
+                url: "{% url 'administremos:novelties' %}",
                 type: 'POST',
                 data: serializedData,
                 success: function () {
-                    $('#modal-create-horario').modal('hide');
-                    location.reload();
+                    $('#modal-create-novelty').modal('hide');
+                    $('#contracts-table').DataTable().ajax.reload();
                 }
             })
         })
+
     </script>
 
 

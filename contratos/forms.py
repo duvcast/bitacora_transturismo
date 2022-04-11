@@ -1,4 +1,5 @@
 from django import forms
+from tempus_dominus.widgets import TimePicker
 
 from .models import FixedContract, OccasionalContract, UserContractor
 
@@ -69,6 +70,16 @@ class OccasionalContractForm(forms.ModelForm):
         self.fields['manager'].widget.attrs.update({'class': 'form-control'})
 
     date_service = forms.DateField(widget=DatePickerInput)
+    hour = forms.TimeField(
+        widget=TimePicker(
+            options={
+                'defaultDate': '1970-01-01T14:56:00'
+            },
+            attrs={
+                'input_toggle': True,
+                'input_group': False,
+            },
+        ), )
 
     class Meta:
         model = OccasionalContract

@@ -91,17 +91,21 @@ WSGI_APPLICATION = 'bitacora.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'transturismo',
+        # 'NAME': 'juadznqy',
         # 'NAME': 'transturismo',
-        'NAME': 'juadznqy',
-        # 'NAME': 'transturismo',
-        # 'USER': 'doadmin',
-        'USER': 'juadznqy',
-        'HOST': 'tuffi.db.elephantsql.com',
-        # 'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
+        'USER': 'doadmin',
+        # 'USER': 'melius',
+        # 'USER': 'juadznqy',
+        # 'HOST': 'localhost',
+        # 'HOST': 'tuffi.db.elephantsql.com',
+        'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
         # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
-        # 'PORT': '25060',
-        'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
-        # 'PASSWORD': 'irrunras87percbh'
+        'PORT': '25060',
+        # 'PORT': '5432',
+        # 'PASSWORD': 'amunozro8970',
+        # 'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
+        'PASSWORD': 'irrunras87percbh'
     }
 }
 

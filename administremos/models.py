@@ -1,3 +1,5 @@
+import datetime as dt
+
 from django.conf import settings
 from django.db import models
 
@@ -55,9 +57,9 @@ class Relief(models.Model):
 class Novelty(models.Model):
     bus = models.ForeignKey(Bus, on_delete=models.CASCADE, related_name="bus")
     start_date = models.DateField(verbose_name="start date")
-    start_hour = models.TimeField(verbose_name="start hour")
+    start_hour = models.TimeField(default=dt.time(00, 00), verbose_name="start hour")
     end_date = models.DateField(verbose_name="end date")
-    end_hour = models.TimeField(verbose_name="end hour")
+    end_hour = models.TimeField(default=dt.time(00, 00), verbose_name="end hour")
     description = models.TextField(verbose_name="description")
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="novelty",
                                    verbose_name="created by", null=True)

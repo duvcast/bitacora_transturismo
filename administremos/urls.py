@@ -8,4 +8,5 @@ urlpatterns = [
     path('buses/', views.bus, name="buses"),
     path('drivers/', views.driver, name="driver"),
     path('remove-driver/', views.remove_bus_driver, name="remove_driver"),
+    path('novelties/', views.novelties, name="novelties"),
 ]
