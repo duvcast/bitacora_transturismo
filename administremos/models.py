@@ -41,6 +41,11 @@ class Driver(models.Model):
         return self.name
 
 
+# class ReliefDriver(models.Model):
+# driver = models.OneToOneField(Driver, on_delete=models.CASCADE, primary_key=True, unique=True)
+# relief = models.OneToOneField(Driver, on_delete=models.CASCADE, primary_key=True, unique=True)
+
+
 class Relief(models.Model):
     driver = models.OneToOneField('Driver', on_delete=models.CASCADE, verbose_name="driver", related_name="relief")
     created_date = models.DateTimeField(verbose_name="date creation")

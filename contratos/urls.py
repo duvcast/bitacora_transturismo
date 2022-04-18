@@ -6,6 +6,8 @@ app_name = "contract"
 
 urlpatterns = [
     path('fixed/', views.index_contracts_fixed, name="index_contract_fixed"),
+    path('fixed-list', views.contract_fixed_list, name='contracts_fixed_list'),
+    path('fixed-create/', views.create_contract_fixed, name='create_contract_fixed'),
     path('occasional/', views.index_contracts_occasional, name="index_contract_occasional"),
     path('occasional/delete/<int:pk>/', views.ContractOccasionalDeleteView.as_view(),
          name="delete_contract_occasional"),

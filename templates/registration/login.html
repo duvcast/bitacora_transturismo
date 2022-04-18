@@ -25,11 +25,8 @@
             <a href="" class="h1"><b>Iniciar Sesión</b></a>
         </div>
         <div class="card-body">
-
             <form action="{% url 'login' %}" method="post">
-                {% for error in form.username.errors %}
-                    <span class="help-block">{{ error }}</span>
-                {% endfor %}
+                {{ form.errors }}
                 {% csrf_token %}
                 <div class="input-group mb-3">
                     {% render_field form.username class="form-control" placeholder=form.username.label type="email" %}

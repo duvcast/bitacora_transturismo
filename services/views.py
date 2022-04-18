@@ -31,6 +31,7 @@ def detail_service(request, pk):
     service = get_object_or_404(Service, pk=pk)
     if request.method == "POST":
         form = ScheduleForm(data=request.POST)
+        print(f'EL error del form de schedule es: {form.errors}')
         if form.is_valid():
             new_form = form.save(commit=False)
             new_form.service = service

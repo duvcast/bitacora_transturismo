@@ -5,6 +5,8 @@ from .models import FixedContract, OccasionalContract, UserContractor
 
 
 class USerContractForm(forms.ModelForm):
+    # type_contractor = forms.ModelChoiceField(queryset=UserContractor.objects.all(), empty_label="ESCOJE UNA OPCION")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name_entity'].widget.attrs.update({'class': 'form-control'})
@@ -25,13 +27,22 @@ class DatePickerInput(forms.DateInput):
 class FixedContractForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['contractor_by'].queryset = UserContractor.objects.filter(type_contractor='CONTRATISTA')
         self.fields['contractor_by'].widget.attrs.update({'class': 'form-control'})
+        self.fields['contractor_for'].queryset = UserContractor.objects.filter(type_contractor='CONTRATANTE')
         self.fields['contractor_for'].widget.attrs.update({'class': 'form-control'})
         self.fields['start_date'].widget.attrs.update({'class': 'form-control'})
         self.fields['end_date'].widget.attrs.update({'class': 'form-control'})
 
     start_date = forms.DateField(widget=DatePickerInput)
     end_date = forms.DateField(widget=DatePickerInput)
+
+    def clean_end_date(self):
+        start_date = self.cleaned_data['start_date']
+        end_date = self.cleaned_data['end_date']
+        if end_date < start_date:
+            raise forms.ValidationError("La fecha final no puede ser menor a la Fecha Inicial")
+        return end_date
 
     class Meta:
         model = FixedContract

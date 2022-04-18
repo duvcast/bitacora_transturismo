@@ -1,5 +1,6 @@
 from django import forms
 from tempus_dominus.widgets import TimePicker
+
 from .models import Service, Schedule
 
 
@@ -16,6 +17,13 @@ class ServiceForm(forms.ModelForm):
 
     start_date = forms.DateField(widget=DatePickerInput)
     end_date = forms.DateField(widget=DatePickerInput)
+
+    def clean_end_date(self):
+        start_date = self.cleaned_data['start_date']
+        end_date = self.cleaned_data['end_date']
+        if end_date < start_date:
+            raise forms.ValidationError("La fecha final no puede ser menor a la inicial")
+        return end_date
 
     class Meta:
         model = Service
@@ -40,7 +48,7 @@ class ScheduleForm(forms.ModelForm):
                 'input_toggle': True,
                 'input_group': False,
             },
-        ),)
+        ), )
     end_hour = forms.TimeField(
         widget=TimePicker(
             options={
@@ -50,7 +58,14 @@ class ScheduleForm(forms.ModelForm):
                 'input_toggle': True,
                 'input_group': False,
             },
-        ),)
+        ), )
+
+    def clean_end_hour(self):
+        start_hour = self.cleaned_data['start_hour']
+        end_hour = self.cleaned_data['end_hour']
+        if end_hour < start_hour:
+            raise forms.ValidationError("La Hora final no puede ser menor a la inicial")
+        return end_hour
 
     class Meta:
         model = Schedule

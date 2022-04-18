@@ -1,0 +1,36 @@
+<thead>
+<tr>
+    <th>Fecha de Firma</th>
+    <th>Fecha de Terminacion</th>
+    <th>Contratante</th>
+    <th>Contratista</th>
+    <th>Tipo de Contrato</th>
+    <th>Acciones</th>
+
+</tr>
+</thead>
+<tbody>
+{% for contract in contracts %}
+    <tr>
+        <td>{{ contract.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ contract.end_date|date:"SHORT_DATE_FORMAT" }}</td>
+        <td>{{ contract.contractor_for.name_entity }}</td>
+        <td>{{ contract.contractor_by.name_entity }}</td>
+        <td><span class="text-red text-bold">{{ contract.type_contract }}</span>
+        </td>
+        <td>
+
+            <a href="{% url 'contracts:detail_contract_fixed' contract.id %}"
+               class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>
+            <a href="{% url 'contracts:update_contract_fixed' contract.pk %}"
+               class="btn btn-info btn-xs">
+                <i class="fa fa-pen"></i>
+            </a>
+            <a href="{% url 'contract:delete_contract' contract.id %}"
+               class="btn btn-danger btn-xs"><i
+                    class="fa fa-trash"></i></a>
+        </td>
+    </tr>
+{% endfor %}
+</tbody>
+
