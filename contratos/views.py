@@ -12,33 +12,20 @@ from services.models import Service
 
 @login_required
 def index_contracts_fixed(request):
-    return render(request, 'contratos/index_contract_fixed.html')
-
-
-@login_required()
-def create_contract_fixed(request):
     if request.method == 'POST':
         form = FixedContractForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse(status=204)
-        else:
-            form = FixedContractForm()
+            return HttpResponse('ok')
     else:
         form = FixedContractForm()
+    contracts = FixedContract.objects.all().order_by('-created_at')
+    print(form)
     context = {
         'form': form,
-    }
-    render(request, 'contratos/partials/_form_contracts_fixed.html', context)
-
-
-@login_required()
-def contract_fixed_list(request):
-    contracts = FixedContract.objects.all().order_by('-created_at')
-    context = {
         'contracts': contracts,
     }
-    return render(request, 'contratos/partials/_contracts_fixed_list.html', context)
+    return render(request, 'contratos/index_contract_fixed.html', context)
 
 
 @login_required
