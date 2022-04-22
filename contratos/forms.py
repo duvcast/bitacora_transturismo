@@ -67,21 +67,24 @@ class OccasionalContractForm(forms.ModelForm):
         self.fields['nit'].widget.attrs.update({'class': 'form-control'})
         self.fields['address'].widget.attrs.update({'class': 'form-control'})
         self.fields['city'].widget.attrs.update({'class': 'form-control'})
-        self.fields['contact_person'].widget.attrs.update({'class': 'form-control'})
-        self.fields['contact_phone'].widget.attrs.update({'class': 'form-control'})
-        self.fields['arrival'].widget.attrs.update({'class': 'form-control'})
-        self.fields['hour'].widget.attrs.update({'class': 'form-control'})
+        self.fields['name_contact'].widget.attrs.update({'class': 'form-control'})
+        self.fields['phone_contact'].widget.attrs.update({'class': 'form-control'})
+        self.fields['destiny'].widget.attrs.update({'class': 'form-control'})
+        self.fields['hour_service'].widget.attrs.update({'class': 'form-control'})
         self.fields['date_service'].widget.attrs.update({'class': 'form-control'})
         self.fields['capacity'].widget.attrs.update({'class': 'form-control'})
-        self.fields['go'].widget.attrs.update({'class': 'form-control'})
-        self.fields['come_bak'].widget.attrs.update({'class': 'form-control'})
+        self.fields['date_departure'].widget.attrs.update({'class': 'form-control'})
+        self.fields['date_arrival'].widget.attrs.update({'class': 'form-control'})
         self.fields['nro_spreadsheet'].widget.attrs.update({'class': 'form-control'})
         self.fields['reservation'].widget.attrs.update({'class': 'form-control'})
         self.fields['observations'].widget.attrs.update({'class': 'form-control'})
-        self.fields['manager'].widget.attrs.update({'class': 'form-control'})
 
     date_service = forms.DateField(widget=DatePickerInput)
-    hour = forms.TimeField(
+    destiny = forms.DateField(widget=DatePickerInput)
+    date_departure = forms.DateField(widget=DatePickerInput)
+    date_arrival = forms.DateField(widget=DatePickerInput)
+
+    hour_service = forms.TimeField(
         widget=TimePicker(
             options={
                 'defaultDate': '1970-01-01T14:56:00'
@@ -94,6 +97,6 @@ class OccasionalContractForm(forms.ModelForm):
 
     class Meta:
         model = OccasionalContract
-        fields = ('contractor_by', 'nit', 'address', 'city', 'contact_person',
-                  'contact_phone', 'arrival', 'hour', 'date_service', 'capacity', 'go',
-                  'come_bak', 'nro_spreadsheet', 'reservation', 'observations', 'observations', 'manager')
+        fields = ('contractor_by', 'nit', 'address', 'city', 'name_contact',
+                  'phone_contact', 'destiny', 'hour_service', 'date_service', 'capacity', 'date_departure',
+                  'date_arrival', 'nro_spreadsheet', 'reservation', 'observations')

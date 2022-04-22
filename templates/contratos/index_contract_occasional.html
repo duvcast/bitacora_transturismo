@@ -1,5 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load widget_tweaks %}
+{% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <!-- XDSoft DateTimePicker -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+          integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    {# Django Tempus Dominus assets are included in `{{ form.media }}` #}
+    {{ form.media }}
+{% endblock %}
 {% block title %}Contratos Ocasionales{% endblock %}
 {% block content %}
     <div class="wrapper" id="content_contracts">
@@ -33,7 +53,7 @@
 
                                 <div class="info-box-content">
                                     <span class="info-box-text">Contratos Ocasionales</span>
-                                    <span class="info-box-number">1,410</span>
+                                    <span class="info-box-number">{{ contracts| length}}</span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -74,17 +94,21 @@
                                         {% load static %}
                                         {% for contract in contracts %}
                                             <tr>
-                                                <td>{{ contract.contractor_by.name_entity }}</td>
+                                                <td>{{ contract.contractor_by }}</td>
                                                 <td>{{ contract.nit }}</td>
                                                 <td>{{ contract.address }}</td>
                                                 <td>{{ contract.city }}</td>
-                                                <td>{{ contract.contact_person }}</td>
-                                                <td>{{ contract.contact_phone }}</td>
+                                                <td>{{ contract.name_contact }}</td>
+                                                <td>{{ contract.phone_contact }}</td>
                                                 <td>{{ contract.date_service|date:"SHORT_DATE_FORMAT" }}</td>
                                                 <td>{{ contract.capacity }}</td>
-                                                <td>{{ contract.nro_spreadsheet }}</td>
+                                                {% if contract.nro_spreadsheet == None %}
+                                                    <td>Sin numero asignado</td>
+                                                {% else %}
+                                                    <td>{{ contract.nro_spreadsheet }}</td>
+                                                {% endif %}
                                                 <td>{{ contract.reservation }}</td>
-                                                <td>{{ contract.manager }}</td>
+                                                <td>{{ contract.created_by.first_name }} {{ contract.created_by.last_name }}</td>
                                                 <td>
 
                                                     <a href="{% url 'contracts:detail_contract_fixed' contract.id %}"
@@ -134,7 +158,7 @@
                                         {% csrf_token %}
                                         <div class="form-row">
                                             <div class="form-group col-6">
-                                                <label for="inputStatus">Contratista</label>
+                                                <label for="inputStatus">Nombre Contratante</label>
                                                 {{ form.contractor_by }}
                                             </div>
                                             <div class="form-group col-6">
@@ -155,21 +179,21 @@
                                         <div class="form-row">
                                             <div class="form-group col-6">
                                                 <label for="inputClientCompany">Persona Contacto</label>
-                                                {{ form.contact_person }}
+                                                {{ form.name_contact }}
                                             </div>
                                             <div class="form-group col-6">
                                                 <label for="inputProjectLeader">Telefono</label>
-                                                {{ form.contact_phone }}
+                                                {{ form.phone_contact }}
                                             </div>
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-4">
                                                 <label for="inputClientCompany">Llegada</label>
-                                                {{ form.arrival }}
+                                                {{ form.destiny }}
                                             </div>
                                             <div class="form-group col-2">
                                                 <label for="inputProjectLeader">Hora</label>
-                                                {{ form.hour }}
+                                                {{ form.hour_service }}
                                             </div>
                                             <div class="form-group col-4">
                                                 <label for="inputProjectLeader">Fecha de Servicio</label>
@@ -183,11 +207,11 @@
                                         <div class="form-row">
                                             <div class="form-group col-2">
                                                 <label for="inputClientCompany">Ida</label>
-                                                {{ form.go }}
+                                                {{ form.date_departure }}
                                             </div>
                                             <div class="form-group col-3">
                                                 <label for="inputProjectLeader">Regreso</label>
-                                                {{ form.come_bak }}
+                                                {{ form.date_arrival }}
                                             </div>
                                             <div class="form-group col-4">
                                                 <label for="inputClientCompany">N° de Planilla</label>
@@ -199,17 +223,13 @@
                                             </div>
                                         </div>
                                         <div class="form-row">
-                                            <div class="form-group col-6">
+                                            <div class="col-12">
                                                 <label for="inputClientCompany">Observaciones</label>
                                                 {{ form.observations }}
                                             </div>
-                                            <div class="form-group col-6">
-                                                <label for="inputProjectLeader">Nombre de quien libera el servicio</label>
-                                                {{ form.manager }}
-                                            </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-12">
+                                        <div class="form-row">
+                                            <div class="col-12 mt-3">
                                                 <input type="submit" value="Crear Contrato"
                                                        class="btn btn-primary float-right">
                                             </div>

@@ -20,7 +20,6 @@ def index_contracts_fixed(request):
     else:
         form = FixedContractForm()
     contracts = FixedContract.objects.all().order_by('-created_at')
-    print(form)
     context = {
         'form': form,
         'contracts': contracts,
@@ -33,7 +32,6 @@ def detail_contract_fixed(request, pk):
     contract = get_object_or_404(FixedContract, pk=pk)
     if request.method == "POST":
         form = ServiceForm(data=request.POST)
-        print(f'EL error del form de service es: {form.errors}')
         if form.is_valid():
             new_form = form.save(commit=False)
             new_form.contract = contract
@@ -76,10 +74,13 @@ class ContractDeleteView(DeleteView):
 
 @login_required
 def index_contracts_occasional(request):
+    print(request.POST)
     if request.method == 'POST':
         form = OccasionalContractForm(request.POST)
         if form.is_valid():
-            form.save()
+            new_form = form.save(commit=False)
+            new_form.created_by = request.user
+            new_form.save()
             return HttpResponse('ok')
     else:
         form = OccasionalContractForm()
