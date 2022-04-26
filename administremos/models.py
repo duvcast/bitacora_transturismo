@@ -25,6 +25,21 @@ class Bus(models.Model):
         return f"{self.code} - {self.name}"
 
 
+class ReliefBus(models.Model):
+    bus = models.ForeignKey('Bus', on_delete=models.CASCADE, verbose_name="bus", related_name="relief_bus")
+    relief = models.ForeignKey('Bus', on_delete=models.CASCADE, verbose_name="bus", related_name="bus_relief")
+    start_date = models.DateTimeField(verbose_name="start date", null=True, blank=True)
+    end_date = models.DateTimeField(verbose_name="end date", null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
+
+    class Meta:
+        db_table = "relief_bus"
+
+    def __str__(self):
+        return self.bus
+
+
 class Driver(models.Model):
     """ Modelo del empleado """
     name = models.CharField(max_length=200, null=True)
@@ -41,22 +56,20 @@ class Driver(models.Model):
         return self.name
 
 
-# class ReliefDriver(models.Model):
-# driver = models.OneToOneField(Driver, on_delete=models.CASCADE, primary_key=True, unique=True)
-# relief = models.OneToOneField(Driver, on_delete=models.CASCADE, primary_key=True, unique=True)
+#
+class ReliefDriver(models.Model):
+    driver = models.ForeignKey('Driver', on_delete=models.CASCADE, verbose_name="driver", related_name="relief_driver")
+    relief = models.ForeignKey('Driver', on_delete=models.CASCADE, verbose_name="driver", related_name="driver_relief")
+    start_date = models.DateTimeField(verbose_name="start date", null=True, blank=True)
+    end_date = models.DateTimeField(verbose_name="end date", null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
-#
-# class Relief(models.Model):
-#     driver = models.OneToOneField('Driver', on_delete=models.CASCADE, verbose_name="driver", related_name="relief")
-#     created_date = models.DateTimeField(verbose_name="date creation")
-#     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
-#     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
-#
-#     class Meta:
-#         db_table = "relief"
-#
-#     def __str__(self):
-#         return self.driver
+    class Meta:
+        db_table = "relief_driver"
+
+    def __str__(self):
+        return self.driver
 
 
 class Novelty(models.Model):

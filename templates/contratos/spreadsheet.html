@@ -10,12 +10,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Panel de contratos</h1>
+                            <h1 class="m-0">Planilla</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">Dashboard v1</li>
+                                <li class="breadcrumb-item active">planilla</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -25,22 +25,20 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <h5 class="mb-2">Lista de Contratos para esta planilla</h5>
+                    <h5 class="mb-2">Resumen diaria para hoy</h5>
                     <div class="row">
-                        {% for contract in contracts %}
-                            <div class="col-md-3 col-sm-6 col-12">
-                                <div class="info-box">
-                                    <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
 
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Contrato N° {{ contract.number_contract }}</span>
-                                        <span class="info-box-number">1,410</span>
-                                    </div>
-                                    <!-- /.info-box-content -->
+                                <div class="info-box-content">
+                                    <span class="info-box-text">{{ data }}</span>
+                                    <span class="info-box-number">1,410</span>
                                 </div>
-                                <!-- /.info-box -->
+                                <!-- /.info-box-content -->
                             </div>
-                        {% endfor %}
+                            <!-- /.info-box -->
+                        </div>
 
 
                         <!-- /.col -->

@@ -74,6 +74,7 @@
                                             <th>NIT</th>
                                             <th>Rol</th>
                                             <th>Fecha de Creacion</th>
+                                            <th>Creado Por</th>
                                             <th>Acciones</th>
 
                                         </tr>
@@ -88,6 +89,7 @@
                                                 <td>{{ user_contract.nit }}</td>
                                                 <td><span class="red">{{ user_contract.type_contractor }}</span></td>
                                                 <td>{{ user_contract.created_at|date:"D d M Y H:i" }}</td>
+                                                <td>{{ user_contract.created_by.first_name }} {{ user_contract.created_by.last_name }}</td>
                                                 <td>
                                                     <a href="{% url 'contracts:update_users_contract' user_contract.id %}"
                                                        class="btn btn-primary">

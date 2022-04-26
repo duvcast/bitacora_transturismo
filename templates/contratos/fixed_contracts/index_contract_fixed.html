@@ -36,9 +36,9 @@
                                 <!-- /.card-header -->
                                 <div class="card-body" id="card-table-contracts-fixed">
                                     <table id="contracts-table" class="table table-bordered table-striped">
-                                        <button type="button" class="btn btn-primary float-right btnCreateContract">
-                                            <i class="fa fa-plus mr-2"></i> Crear Nuevo Contrato
-                                        </button>
+                                        <a href="{% url 'contracts:create_fixed_contract' %}"
+                                           class="btn btn-primary float-right "> <i class="fa fa-plus mr-2"></i> Crear
+                                            Nuevo Contrato</a>
                                         <thead>
                                         <tr>
                                             <th>Fecha de firma</th>
@@ -46,6 +46,9 @@
                                             <th>Contratante</th>
                                             <th>Contratista</th>
                                             <th>Tipo de Contrato</th>
+                                            <th>Servicios</th>
+                                            <th>Fecha Creacion</th>
+                                            <th>Creado Por</th>
                                             <th>Acciones</th>
 
                                         </tr>
@@ -56,9 +59,12 @@
                                             <tr>
                                                 <td>{{ contract.start_date|date:"SHORT_DATE_FORMAT" }}</td>
                                                 <td>{{ contract.end_date|date:"SHORT_DATE_FORMAT" }}</td>
-                                                <td>{{ contract.contractor_by.name_entity }}</td>
                                                 <td>{{ contract.contractor_for.name_entity }}</td>
+                                                <td>{{ contract.contractor_by.name_entity }}</td>
                                                 <td><span class="text-red">{{ contract.type_contract }}</span></td>
+                                                <td>{{ contract.services_contract.count }}</td>
+                                                <td>{{ contract.created_at|date:"SHORT_DATE_FORMAT" }}</td>
+                                                <td>{{ contract.created_by.first_name }} {{ contract.created_by.last_name }}</td>
                                                 <td>
 
                                                     <a href="{% url 'contracts:detail_contract_fixed' contract.id %}"
@@ -94,46 +100,32 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                    <div class="modal fade" id="modal-delete-contract-fixed" tabindex="-1" role="dialog"
                          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
                             <div class="modal-content ">
-                                <div class="modal-header">
-                                    <h5 class="modal-title " id="exampleModalLongTitle">Nuevo Contrato</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
+                                <div class="modal-header justify-content-center">
+                                    <h5 class="modal-title text-center" id="exampleModalLongTitle">¿Seguro que quieres
+                                        eliminar este contracto?</h5>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="post" id="form-create-contract">
+                                    <form method="post" id="form-delete-contract-fixed">
                                         {% csrf_token %}
-                                        <div class="form-row">
-                                            <div class="form-group col-6">
-                                                <label for="inputStatus">Contratista</label>
-                                                {{ form.contractor_by }}
-                                            </div>
-                                            <div class="form-group col-6">
-                                                <label for="inputStatus">Contratante</label>
-                                                {{ form.contractor_for }}
-                                            </div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-6">
-                                                <label for="inputClientCompany">Fecha de inicio</label>
-                                                {{ form.start_date }}
-                                            </div>
-                                            <div class="form-group col-6">
-                                                <label for="inputProjectLeader">Fecha Final</label>
-                                                {{ form.end_date }}
-                                            </div>
-                                        </div>
+                                        <input type="hidden" value="" id="id-contract-fixed-delete"
+                                               name="id-contract-fixed">
                                         <div class="row">
-                                            <div class="col-12">
-                                                <input type="submit" value="Crear Contrato"
-                                                       class="btn btn-primary float-right">
+                                            <div class="col-6 text-center">
+                                                <a href="#"
+                                                   class="btn btn-secondary" id="btn-close"><i class="fa fa-stop"></i>
+                                                    Cancelar</a>
+                                            </div>
+                                            <div class="col-6 text-center">
+                                                <button type="submit" class="btn btn-danger">
+                                                    <i class="fa fa-eraser"></i>
+                                                    Eliminar
+                                                </button>
                                             </div>
                                         </div>
-
                                     </form>
                                 </div>
                             </div>
@@ -151,37 +143,31 @@
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
 
     <script>
-
-        $(function () {
-            $('#contracts-table').DataTable({
-                responsive: true,
-                autoWidth: true
+        $(document).ready(function () {
+            $('#contracts-table').dataTable({
+                "order": [[6, "desc"]]
             });
-            $('.btnCreateContract').on('click', function () {
-                $('#exampleModalCenter').modal('show');
-            });
-            $('.btnEditContract').on('click', function () {
-                $('#exampleModalCenter').modal('show');
-            });
-            $('#form-create-contract').on('submit', function (e) {
-
-                e.preventDefault();
-
-                var serializedData = $(this).serialize();
-                $.ajax({
-                    url: "{% url 'contracts:index_contract_fixed' %}",
-                    type: 'POST',
-                    data: serializedData,
-                    success: function () {
-                        $('#exampleModalCenter').modal('hide');
-                        location.reload();
-                    }
-                })
-            })
         })
 
+        function showModalDeleteContractFixed(idContract) {
+            document.getElementById("id-contract-fixed-delete").value = idContract;
+            $('#modal-delete-contract-fixed').modal('show');
+        }
 
+        $('#form-delete-contract-fixed').on('submit', function (e) {
+
+            e.preventDefault();
+
+            var serializedData = $(this).serialize();
+            $.ajax({
+                url: "{% url 'contracts:contracts_fixed_delete' %}",
+                type: 'POST',
+                data: serializedData,
+                success: function () {
+                    $('#modal-delete-contract-fixed').modal('hide');
+                }
+            })
+        });
     </script>
-
 
 {% endblock %}

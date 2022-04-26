@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block head %}
+    {# Include FontAwesome; required for icon display #}
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css">
+
+    {# Include Bootstrap 4 and jQuery #}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <!-- XDSoft DateTimePicker -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+          integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    {# Django Tempus Dominus assets are included in `{{ form.media }}` #}
+    {{ form.media }}
+{% endblock %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="content-wrapper">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+        {% endif %}
+
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Actualizar contrato</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Actualizar contrato</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-8 ">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">General</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form action="{% url 'contracts:update_contract_occasional' occasionalcontract.id %}"
+                                  method="post">
+                                {% csrf_token %}
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="inputStatus">Nombre Contratante</label>
+                                        {{ form.contractor_by }}
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="inputStatus">NIT</label>
+                                        {{ form.nit }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="inputClientCompany">Direccion</label>
+                                        {{ form.address }}
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="inputProjectLeader">Ciudad</label>
+                                        {{ form.city }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="inputClientCompany">Persona Contacto</label>
+                                        {{ form.name_contact }}
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="inputProjectLeader">Telefono</label>
+                                        {{ form.phone_contact }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-4">
+                                        <label for="inputClientCompany">Llegada</label>
+                                        {{ form.destiny }}
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="inputProjectLeader">Hora</label>
+                                        {{ form.hour_service }}
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="inputProjectLeader">Fecha de Servicio</label>
+                                        {{ form.date_service }}
+                                    </div>
+                                    <div class="form-group col-2">
+                                        <label for="inputProjectLeader">Capacidad</label>
+                                        {{ form.capacity }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-2">
+                                        <label for="inputClientCompany">Ida</label>
+                                        {{ form.date_departure }}
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label for="inputProjectLeader">Regreso</label>
+                                        {{ form.date_arrival }}
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="inputClientCompany">N° de Planilla</label>
+                                        {{ form.nro_spreadsheet }}
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label for="inputProjectLeader">Reserva</label>
+                                        {{ form.reservation }}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <label for="inputClientCompany">Observaciones</label>
+                                        {{ form.observations }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <a href="{% url 'contracts:index_contract_occasional' %}" class="btn btn-secondary">Cancelar</a>
+                                        <input type="submit" value="Actualizar" class="btn btn-primary float-right">
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+
+        </section>
+    </div>
+    <!-- /.content -->
+{% endblock %}

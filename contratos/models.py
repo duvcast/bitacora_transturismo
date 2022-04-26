@@ -2,6 +2,7 @@ import datetime as dt
 
 from django.conf import settings
 from django.db import models
+from django.forms import model_to_dict
 
 from users.models import Manager
 
@@ -48,8 +49,13 @@ class FixedContract(models.Model):
 
     # def get_absolute_url(self):
     #     return reverse('', kwargs={'pk': self.pk})
+    #
+    # def toJSON(self):
+    #     contract = model_to_dict(self)
+    #     return contract
 
     class Meta:
+        ordering = ('created_at',)
         db_table = 'fixed_contract'
 
 
@@ -60,7 +66,7 @@ class OccasionalContract(models.Model):
     city = models.CharField(max_length=200, verbose_name="city")
     name_contact = models.CharField(max_length=300, verbose_name="name contact")
     phone_contact = models.CharField(max_length=300, verbose_name="phone contact")
-    destiny = models.DateField(verbose_name="destiny")
+    destiny = models.CharField(max_length=200, verbose_name="destiny")
     hour_service = models.TimeField(default=dt.time(00, 00), verbose_name="hour service")
     date_service = models.DateField(verbose_name="date service")
     capacity = models.CharField(max_length=10, verbose_name="capacity")

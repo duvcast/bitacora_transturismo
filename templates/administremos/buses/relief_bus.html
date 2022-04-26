@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %}Relevos Buses{% endblock %}
+{% block content %}
+    <div class="wrapper" id="content_contracts">
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Panel de Relevos Buses</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                                <li class="breadcrumb-item active">Relevo Buses</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Total Buses con Relevos</span>
+                                    <span class="info-box-number">{{ reliefs_buses|length }}</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Conductores Disponibles</span>
+                                    <span class="info-box-number">410</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Conductores Ocupados</span>
+                                    <span class="info-box-number">13,648</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-3 col-sm-6 col-12">
+                            <div class="info-box">
+                                <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
+
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Conductores con relevo</span>
+                                    <span class="info-box-number">93,139</span>
+                                </div>
+                                <!-- /.info-box-content -->
+                            </div>
+                            <!-- /.info-box -->
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="info-box align-items-center">
+                                <form method="post" action="{% url 'administremos:relief_buses' %}"
+                                      class="form-inline m-4">
+                                    {% csrf_token %}
+                                    <div class="form-row align-items-center">
+                                        <div class="form-group">
+                                            <label for="inputStatus" class="mr-2">Bus</label>
+                                            {{ form.bus|add_class:"mr-2" }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputStatus" class="mr-2">Relevo</label>
+                                            {{ form.relief|add_class:"mr-2" }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputStatus" class="mr-2">Fecha Inicio</label>
+                                            {{ form.start_date|add_class:"mr-2" }}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inputStatus" class="mr-2">Fecha Final</label>
+                                            {{ form.end_date|add_class:"mr-2" }}
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary ml-2">Relevar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">Esta es tu lista de Relevos para los Buses</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <div class="card-body" id="card-body">
+                                    <table id="relief-buses-table" class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre Bus</th>
+                                            <th>Nombre Relevo</th>
+                                            <th>Fecha Inicio Relevo</th>
+                                            <th>Fecha Fin Relevo</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% load static %}
+                                        {% for relief in reliefs_buses %}
+                                            <tr>
+                                                <td>{{ relief.bus.name }}</td>
+                                                <td>{{ relief.relief.name }}</td>
+                                                <td>{{ relief.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                <td>{{ relief.end_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                <td class="col-buttons"><a href="#" class="btn btn-warning disabled">
+                                                    <i class="fa fa-pen"></i>
+                                                </a>
+                                                    <a href="#" class="btn btn-danger disabled">
+                                                        <i class="fa fa-trash"></i></a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+
+            <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+                <i class="fas fa-chevron-up"></i>
+            </a>
+        </div>
+
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- ./wrapper -->
+
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#relief-buses-table").DataTable({
+                responsive: true,
+                autoWidth: true
+            })
+        })
+    </script>
+{% endblock %}
+

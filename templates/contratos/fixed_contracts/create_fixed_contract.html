@@ -1,25 +1,17 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}Contratos Fijos{% endblock %}
 {% block content %}
+    <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-success" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-
-        {% endif %}
-
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Actualizar contrato</h1>
-                    </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Actualizar contrato</li>
+                            <li class="breadcrumb-item active">Crear Contrato</li>
                         </ol>
                     </div>
                 </div>
@@ -28,20 +20,14 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="row">
-                <div class="col-md-8 ">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-6">
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">General</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
+                            <h2 class="text-center">Crear Contrato</h2>
                         </div>
                         <div class="card-body">
-                            <form action="{% url 'contracts:update_contract_fixed' fixedcontract.id %}" method="post">
+                            <form method="post" id="form-create-contract">
                                 {% csrf_token %}
                                 <div class="form-row">
                                     <div class="form-group col-6">
@@ -53,23 +39,38 @@
                                         {{ form.contractor_for }}
                                     </div>
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-12">
-                                        <a href="{% url 'contracts:contracts_fixed_list' %}" class="btn btn-secondary">Cancelar</a>
-                                        <input type="submit" value="Actualizar" class="btn btn-primary float-right">
+                                <div class="form-row">
+                                    <div class="form-group col-6">
+                                        <label for="inputClientCompany">Fecha de inicio</label>
+                                        {{ form.start_date }}
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label for="inputProjectLeader">Fecha Final</label>
+                                        {{ form.end_date }}
                                     </div>
                                 </div>
-                            </form>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <button type="submit"
+                                                class="btn btn-primary float-right" id="btn-submit-contract">
+                                            Crear Contrato
+                                        </button>
+                                    </div>
+                                </div>
 
+                            </form>
                         </div>
-                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
-
         </section>
+        <!-- /.content -->
+
+        <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+            <i class="fas fa-chevron-up"></i>
+        </a>
     </div>
-    <!-- /.content -->
+    <!-- /.content-wrapper -->
+    <!-- ./wrapper -->
+
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 
@@ -9,22 +9,41 @@ from contratos.models import FixedContract, Spreadsheet, OccasionalContract, Use
 from services.forms import ServiceForm
 from services.models import Service
 
+@login_required()
+def contracts_fixed_list(request):
+    contracts = FixedContract.objects.all().order_by('-created_at')
+    context = {
+        'contracts': contracts,
+    }
+    return render(request, 'contratos/fixed_contracts/index_contract_fixed.html', context)
 
-@login_required
-def index_contracts_fixed(request):
+@login_required()
+def create_fixed_contract(request):
     if request.method == 'POST':
         form = FixedContractForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponse('ok')
+            new_form = form.save(commit=False)
+            new_form.created_by = request.user
+            new_form.save()
+            return redirect('contracts:contracts_fixed_list')
     else:
         form = FixedContractForm()
-    contracts = FixedContract.objects.all().order_by('-created_at')
     context = {
         'form': form,
-        'contracts': contracts,
     }
-    return render(request, 'contratos/index_contract_fixed.html', context)
+    return render(request, 'contratos/fixed_contracts/create_fixed_contract.html', context)
+
+
+
+
+
+def contract_fixed_delete(request):
+    if request.method == 'POST':
+        print(request.POST.get('id-contract-fixed', False))
+        contract = FixedContract.objects.get(id=request.POST.get('id-contract-fixed', False))
+        contract.delete()
+        print('eliminado...')
+        return HttpResponse('record deleted')
 
 
 @login_required
@@ -93,10 +112,10 @@ def index_contracts_occasional(request):
 
 
 class ContractOccasionalUpdateView(UpdateView):
-    model = FixedContract
-    form_class = FixedContractEditForm
+    model = OccasionalContract
+    form_class = OccasionalContractForm
     success_url = reverse_lazy('contracts:index_contract_occasional')
-    template_name = 'contratos/update_contract.html'
+    template_name = 'contratos/update_contract_occasional.html'
 
 
 class ContractOccasionalDeleteView(DeleteView):
@@ -135,3 +154,11 @@ class UserContractorDeleteView(DeleteView):
     model = UserContractor
     success_url = reverse_lazy('contracts:users_contract')
     template_name = 'contratos/delete_user_contract.html'
+
+
+
+def spreadsheet(request):
+    context = {
+        'data': 'hola',
+    }
+    return render(request, 'contratos/spreadsheet.html', context)

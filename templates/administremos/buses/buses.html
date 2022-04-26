@@ -34,7 +34,7 @@
 
                                 <div class="info-box-content">
                                     <span class="info-box-text">Buses con novedad</span>
-                                    <span class="info-box-number">1,410</span>
+                                    <span class="info-box-number">{{ buses|length }}</span>
                                 </div>
                                 <!-- /.info-box-content -->
                             </div>
@@ -89,7 +89,7 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="card-body" id="card-body">
-                                    <table id="contracts-table" class="table table-bordered table-striped">
+                                    <table id="buses-table" class="table table-bordered table-striped">
                                         <thead>
                                         <tr>
                                             <th>Nombre</th>
@@ -98,8 +98,6 @@
                                             <th>Marca</th>
                                             <th>Modelo</th>
                                             <th>Conductor Asignado</th>
-                                            <th>Relevo</th>
-                                            <th>Fecha de Relevo</th>
                                             <th>Acciones</th>
                                         </tr>
                                         </thead>
@@ -114,7 +112,11 @@
                                                 {% else %}
                                                     <td>SIN PLACA</td>
                                                 {% endif %}
-                                                <td>{{ bus.brand }}</td>
+                                                {% if bus.brand %}
+                                                    <td>{{ bus.brand }}</td>
+                                                 {% else %}
+                                                    <td>Sin Marca</td>
+                                                {% endif %}
                                                 {% if bus.model %}
                                                     <td>{{ bus.model }}</td>
                                                 {% else %}
@@ -125,16 +127,7 @@
                                                 {% else %}
                                                     <td>NO ASIGNADO</td>
                                                 {% endif %}
-                                                {% if bus.driver.relief %}
-                                                    <td>{{ bus.driver.relief }}</td>
-                                                {% else %}
-                                                    <td>SIN RELEVO</td>
-                                                {% endif %}
-                                                {% if bus.driver.relief %}
-                                                    <td>{{ bus.driver.relief.created_date }}</td>
-                                                {% else %}
-                                                    <td>SIN RELEVO</td>
-                                                {% endif %}
+
                                                 <td class="col-buttons">
                                                     <a href="#" class="btn btn-warning"
                                                        onclick="showModalEdit({{ bus.id }},'{{ bus.name }}')">
@@ -256,7 +249,7 @@
     <script>
 
         function getData() {
-            $("#contracts-table").DataTable({
+            $("#buses-table").DataTable({
                 responsive: true,
                 autoWidth: true
             })
