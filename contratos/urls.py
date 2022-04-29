@@ -9,7 +9,8 @@ urlpatterns = [
     path('fixed-list/', views.contracts_fixed_list, name="contracts_fixed_list"),
     path('fixed-delete/', views.contract_fixed_delete, name="contracts_fixed_delete"),
     path('occasional/', views.index_contracts_occasional, name="index_contract_occasional"),
-    path('occasional/update/<int:pk>/', views.ContractOccasionalUpdateView.as_view(), name="update_contract_occasional"),
+    path('occasional/update/<int:pk>/', views.ContractOccasionalUpdateView.as_view(),
+         name="update_contract_occasional"),
     path('occasional/delete/<int:pk>/', views.ContractOccasionalDeleteView.as_view(),
          name="delete_contract_occasional"),
     path('fixed/<int:pk>/', views.detail_contract_fixed, name="detail_contract_fixed"),
@@ -20,6 +21,3 @@ urlpatterns = [
     path('users-contacts/delete/<int:pk>/', views.UserContractorDeleteView.as_view(), name="delete_users_contract"),
     path('spreadsheet/', views.spreadsheet, name="spreadsheet"),
 ]
-
-
-

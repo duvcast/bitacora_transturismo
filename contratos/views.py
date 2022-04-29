@@ -4,10 +4,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic.edit import UpdateView, DeleteView
 
+from administremos.models import Driver, Bus, ReliefBus, ReliefDriver, Novelty
 from contratos.forms import FixedContractForm, FixedContractEditForm, OccasionalContractForm, USerContractForm
-from contratos.models import FixedContract, Spreadsheet, OccasionalContract, UserContractor
+from contratos.models import FixedContract, OccasionalContract, UserContractor
 from services.forms import ServiceForm
 from services.models import Service
+
 
 @login_required()
 def contracts_fixed_list(request):
@@ -16,6 +18,7 @@ def contracts_fixed_list(request):
         'contracts': contracts,
     }
     return render(request, 'contratos/fixed_contracts/index_contract_fixed.html', context)
+
 
 @login_required()
 def create_fixed_contract(request):
@@ -32,9 +35,6 @@ def create_fixed_contract(request):
         'form': form,
     }
     return render(request, 'contratos/fixed_contracts/create_fixed_contract.html', context)
-
-
-
 
 
 def contract_fixed_delete(request):
@@ -68,12 +68,28 @@ def detail_contract_fixed(request, pk):
 
 
 @login_required
-def spreadsheet(request, pk):
-    spreadsheets = get_object_or_404(Spreadsheet, pk=pk)
-    contracts = FixedContract.objects.filter(spreadsheets=spreadsheets.id)
+def spreadsheet(request):
+    contractors_for = UserContractor.objects.filter(type_contractor__iexact='CONTRATISTA')
+    contractors_by = UserContractor.objects.filter(type_contractor__iexact='CONTRATANTE')
+    fixed_contracts = FixedContract.objects.all().order_by('-created_by')
+    print(fixed_contracts)
+    occasional_contracts = OccasionalContract.objects.all().order_by('-created_at')
+    buses = Bus.objects.all().order_by('-created_at')
+    drivers = Driver.objects.all().order_by('-created_at')
+    relief_buses = ReliefBus.objects.all().order_by('-created_at')
+    relief_drivers = ReliefDriver.objects.all().order_by('-created_at')
+    novelties = Novelty.objects.all().order_by('-created_at')
     context = {
-        'spreadsheets': spreadsheets,
-        'contracts': contracts,
+        'contractors_for': contractors_for,
+        'contractors_by': contractors_by,
+        'fixed_contracts': fixed_contracts,
+        'occasional_contracts': occasional_contracts,
+        'buses': buses,
+        'drivers': drivers,
+        'relief_buses': relief_buses,
+        'relief_drivers': relief_drivers,
+        'novelties': novelties,
+
     }
     return render(request, 'contratos/spreadsheet.html', context)
 
@@ -87,7 +103,7 @@ class ContractFixedUpdateView(UpdateView):
 
 class ContractDeleteView(DeleteView):
     model = FixedContract
-    success_url = reverse_lazy('contracts:index_contract_fixed')
+    success_url = reverse_lazy('contracts:contracts_fixed_list')
     template_name = 'contratos/delete_contract.html'
 
 
@@ -154,11 +170,3 @@ class UserContractorDeleteView(DeleteView):
     model = UserContractor
     success_url = reverse_lazy('contracts:users_contract')
     template_name = 'contratos/delete_user_contract.html'
-
-
-
-def spreadsheet(request):
-    context = {
-        'data': 'hola',
-    }
-    return render(request, 'contratos/spreadsheet.html', context)

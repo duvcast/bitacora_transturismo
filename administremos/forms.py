@@ -46,6 +46,13 @@ class DriverReliefForm(forms.ModelForm):
     start_date = forms.DateField(widget=DatePickerInput)
     end_date = forms.DateField(widget=DatePickerInput)
 
+    def clean_end_date(self):
+        start_date = self.cleaned_data['start_date']
+        end_date = self.cleaned_data['end_date']
+        if end_date < start_date:
+            raise forms.ValidationError("La Fecha final no puede ser menor a la Inicial")
+        return end_date
+
     class Meta:
         model = ReliefDriver
         fields = ('driver', 'relief', 'start_date', 'end_date')
@@ -91,6 +98,13 @@ class NoveltyForm(forms.ModelForm):
         if end_hour < start_hour:
             raise forms.ValidationError("La Hora final no puede ser menor a la inicial")
         return end_hour
+
+    def clean_end_date(self):
+        start_date = self.cleaned_data['start_date']
+        end_date = self.cleaned_data['end_date']
+        if end_date < start_date:
+            raise forms.ValidationError("La Fecha final no puede ser menor a la Inicial")
+        return end_date
 
     class Meta:
         model = Novelty

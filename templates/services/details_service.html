@@ -78,7 +78,11 @@
                                                 <td>{{ horario.start_hour }}</td>
                                                 <td>{{ horario.end_hour }}</td>
                                                 <td>{{ horario.bus }}</td>
-                                                <td>{{ horario.bus.driver.name }}</td>
+                                                {% if horario.bus.driver %}
+                                                    <td>{{ horario.bus.driver.name }}</td>
+                                                {% else %}
+                                                    <th>NO ASIGNADO</th>
+                                                {% endif %}
                                                 <td>
                                                     <a href="#"
                                                        class="btn btn-primary"><i class="fa fa-trash"></i> Editar</a>

@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import DeleteView, UpdateView
 
 from services.forms import ServiceForm, ScheduleForm
@@ -59,7 +59,10 @@ class UpdateServiceView(UpdateView):
 class ServiceDeleteView(DeleteView):
     model = Service
     template_name = 'services/delete_services.html'
-    success_url = reverse_lazy('services:index')
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse("contract:detail_contract_fixed", kwargs={"pk": pk})
 
 
 # class UpdateScheduleView(UpdateView):
@@ -71,5 +74,8 @@ class ServiceDeleteView(DeleteView):
 
 class DeleteScheduleView(DeleteView):
     model = Schedule
-    success_url = reverse_lazy('services:index')
     template_name = 'services/delete_schedule.html'
+
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse("services:detail_service", kwargs={"pk": pk})

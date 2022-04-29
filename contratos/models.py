@@ -36,7 +36,7 @@ class FixedContract(models.Model):
     contractor_by = models.ForeignKey(UserContractor, on_delete=models.DO_NOTHING, verbose_name="contractor by",
                                       related_name="contract_by_fixed")
     contractor_for = models.ForeignKey(UserContractor, on_delete=models.DO_NOTHING, verbose_name="contractor for",
-                                       related_name="contract_for")
+                                       related_name="contract_for_fixed")
     start_date = models.DateTimeField(verbose_name="start date")
     end_date = models.DateTimeField(verbose_name="end date")
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="fixed_contract",
@@ -82,7 +82,7 @@ class OccasionalContract(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
 
     def __str__(self):
-        return f"{self.contractor_by} - {self.created_by.name}"
+        return f"{self.contractor_by}"
 
     class Meta:
         db_table = 'occasional_contract'
