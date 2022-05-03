@@ -12960,7 +12960,7 @@ var FullCalendar = (function (exports) {
             // ensure 6 weeks
             if (this.props.monthMode &&
                 this.props.fixedWeekCount) {
-                var rowCnt = Math.ceil(// could be partial weeks due to hiddenDays
+                var rowCnt = Math.ceil(// could be partials weeks due to hiddenDays
                 diffWeeks(start, end));
                 end = addWeeks(end, 6 - rowCnt);
             }

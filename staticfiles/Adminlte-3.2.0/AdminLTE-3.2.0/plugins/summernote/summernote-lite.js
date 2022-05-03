@@ -3790,7 +3790,7 @@ var Style = /*#__PURE__*/function () {
 
       if (expandClosestSibling) {
         if (onlyPartialContains) {
-          var nodesInRange = rng.nodes(); // compose with partial contains predication
+          var nodesInRange = rng.nodes(); // compose with partials contains predication
 
           pred = func.and(pred, function (node) {
             return lists.contains(nodesInRange, node);

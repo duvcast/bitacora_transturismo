@@ -17,6 +17,8 @@ from pathlib import Path
 # from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.urls import reverse
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -159,5 +161,6 @@ AUTH_USER_MODEL = "users.User"
 TEMPUS_DOMINUS_LOCALIZE = True
 TEMPUS_DOMINUS_TIME_FORMAT = 'HH:mm'
 
-LOGIN_REDIRECT_URL = "/contracts/fixed"
-LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/administremos/novelties-list/"
+LOGIN_URL = "/login/"
+LOGOUT_REDIRECT_URL = "/login/"

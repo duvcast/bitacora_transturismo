@@ -1,314 +1,81 @@
-{% extends 'base.html' %}
-{% load widget_tweaks %}
+{% extends 'table_data.html' %}
 {% load static %}
 {% block title %}Buses{% endblock %}
-{% block content %}
-    <div class="wrapper" id="content_contracts">
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Panel de Buses</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                                <li class="breadcrumb-item active">Buses</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
+{% load widget_tweaks %}
 
-                    <div class="row">
-                        <div class="col-md-3 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-info"><i class="far fa-envelope"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Buses con novedad</span>
-                                    <span class="info-box-number">{{ buses|length }}</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-3 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-success"><i class="far fa-flag"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Buses Disponibles</span>
-                                    <span class="info-box-number">410</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-3 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-warning"><i class="far fa-copy"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Buses Ocupados</span>
-                                    <span class="info-box-number">13,648</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-3 col-sm-6 col-12">
-                            <div class="info-box">
-                                <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>
-
-                                <div class="info-box-content">
-                                    <span class="info-box-text">Buses Sin Conductor</span>
-                                    <span class="info-box-number">93,139</span>
-                                </div>
-                                <!-- /.info-box-content -->
-                            </div>
-                            <!-- /.info-box -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="card-title">Esta es tu lista de buses</h3>
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body" id="card-body">
-                                    <table id="buses-table" class="table table-bordered table-striped">
-                                        <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Código</th>
-                                            <th>Placa</th>
-                                            <th>Marca</th>
-                                            <th>Modelo</th>
-                                            <th>Conductor Asignado</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {% load static %}
-                                        {% for bus in buses %}
-                                            <tr>
-                                                <td>{{ bus.name }}</td>
-                                                <td>{{ bus.code }}</td>
-                                                {% if bus.plate %}
-                                                    <td>{{ bus.plate }}</td>
-                                                {% else %}
-                                                    <td>SIN PLACA</td>
-                                                {% endif %}
-                                                {% if bus.brand %}
-                                                    <td>{{ bus.brand }}</td>
-                                                 {% else %}
-                                                    <td>Sin Marca</td>
-                                                {% endif %}
-                                                {% if bus.model %}
-                                                    <td>{{ bus.model }}</td>
-                                                {% else %}
-                                                    <td>SIN MODELO</td>
-                                                {% endif %}
-                                                {% if bus.driver %}
-                                                    <td>{{ bus.driver.name }}</td>
-                                                {% else %}
-                                                    <td>NO ASIGNADO</td>
-                                                {% endif %}
-
-                                                <td class="col-buttons">
-                                                    <a href="#" class="btn btn-warning"
-                                                       onclick="showModalEdit({{ bus.id }},'{{ bus.name }}')">
-                                                        <i class="fa fa-pen"></i>
-                                                    </a>
-                                                    <a href="#" class="btn btn-danger {% if bus.driver == None %}
-                                                        disabled
-                                                    {% endif %} "
-                                                       onclick="showModalDelete({{ bus.id }})">
-                                                        <i class="fa fa-trash"></i></a>
-                                                </td>
-
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
-                        </div>
-                    </div>
-
-                </div><!-- /.container-fluid -->
-            </section>
-            <!-- /.content -->
-
-            <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
-                <i class="fas fa-chevron-up"></i>
-            </a>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="modal fade" id="modal-assign-driver" tabindex="-1" role="dialog"
-                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                            <div class="modal-content ">
-                                <div class="modal-header">
-                                    <h5 class="modal-title " id="exampleModalLongTitle">Asignar Conductor</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="post" id="form-assign-driver">
-                                        {% csrf_token %}
-                                        <input type="hidden" value="" id="id-bus-input" name="id">
-                                        <div class="form-row">
-                                            <div class="form-group col-6">
-                                                <label for="inputStatus">Bus</label>
-                                                {{ form.name|add_class:"disabled"|attr:'readonly'|attr:"id:input-bus-name" }}
-                                            </div>
-                                            <div class="form-group col-6">
-                                                <label for="inputStatus">Conductor</label>
-                                                {{ form.driver }}
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <input type="submit" value="Asignar Conductor"
-                                                       class="btn btn-primary float-right">
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="modal fade" id="modal-unassign-driver" tabindex="-1" role="dialog"
-                         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-                            <div class="modal-content ">
-                                <div class="modal-header justify-content-center">
-                                    <h5 class="modal-title text-center" id="exampleModalLongTitle">¿Desvincular
-                                        Conductor?</h5>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="post" id="form-delete-driver">
-                                        {% csrf_token %}
-                                        <input type="hidden" value="" id="id-bus-delete" name="id-bus">
-                                        <div class="row">
-                                            <div class="col-6 text-center">
-                                                <a href="#"
-                                                   class="btn btn-secondary" id="btn-close"><i class="fa fa-stop"></i>
-                                                    Cancelar</a>
-                                            </div>
-                                            <div class="col-6 text-center">
-                                                <button type="submit" class="btn btn-danger">
-                                                    <i class="fa fa-eraser"></i>
-                                                    Eliminar
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- /.content-wrapper -->
-    <!-- ./wrapper -->
+{% block head_table %}
+    <script src="{% static 'js/bus/list.js' %}"></script>
+{% endblock %}
+{% block button_add %}
 
 {% endblock %}
-{% block javascript %}
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.5/datatables.min.js"></script>
 
-    <script>
+{% block columns %}
+    <tr>
+        <th>id</th>
+        <th>Nombre</th>
+        <th>Código</th>
+        <th>Placa</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Conductor Asignado</th>
+        <th>Acciones</th>
+    </tr>
+{% endblock %}
+{% block rows %}
 
-        function getData() {
-            $("#buses-table").DataTable({
-                responsive: true,
-                autoWidth: true
-            })
-        }
+{% endblock %}
+{% block modals %}
+    <!-- XDSoft DateTimePicker -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+          integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    {# Django Tempus Dominus assets are included in `{{ form.media }}` #}
+    {{ form.media }}
+    <!-- Modal -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="modal fade" id="modal-bus" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <h5 class="modal-title " id="exampleModalLongTitle">Nueva Asociasion</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="." method="post" id="form-bus">
+                                    <input name="action" type="hidden" value="add">
+                                    <input name="id" id="id" type="hidden" value="0">
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <label for="inputName">Bus</label>
+                                            {{ form.name|add_class:"disabled"|attr:'readonly' }}
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="inputName">Conductor</label>
+                                            {{ form.driver }}
+                                        </div>
+                                    </div>
 
-        getData();
-
-        {% comment %} $('#contracts-table tbody ').on('click', 'tr', function () {
-             console.log(table.row(this).data()[0]);
-         });{% endcomment %}
-
-        function showModalEdit(busId, nameBus) {
-            document.getElementById("id-bus-input").value = busId;
-            document.getElementById("input-bus-name").value = nameBus;
-            $('#modal-assign-driver').modal('show');
-        }
-
-        $('#form-assign-driver').on('submit', function (e) {
-
-            e.preventDefault();
-
-            var serializedData = $(this).serialize();
-            $.ajax({
-                url: "{% url 'administremos:buses' %}",
-                type: 'POST',
-                data: serializedData,
-                success: function () {
-                    $('#modal-assign-driver').modal('hide');
-                    location.reload();
-                }
-            })
-        })
-
-
-        function showModalDelete(busId) {
-            document.getElementById("id-bus-delete").value = busId;
-            $('#modal-unassign-driver').modal('show');
-        }
-
-        $('#form-delete-driver').on('submit', function (e) {
-
-            e.preventDefault();
-
-            var serializedData = $(this).serialize();
-            $.ajax({
-                url: "{% url 'administremos:remove_driver' %}",
-                type: 'POST',
-                data: serializedData,
-                success: function () {
-                    $('#modal-unassign-driver').modal('hide');
-                    location.reload();
-                }
-            })
-        });
-        $('#btn-close').on('click', function () {
-            $('#modal-unassign-driver').modal('hide');
-        })
-
-    </script>
-
-
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <input type="submit" value="Asignar Conductor"
+                                                   class="btn btn-primary float-right">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

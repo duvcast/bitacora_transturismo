@@ -30,6 +30,18 @@ class UserContractor(models.Model):
     class Meta:
         db_table = 'user_contract'
 
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'name_entity': self.name_entity,
+            'phone': self.phone,
+            'extension': self.extension,
+            'nit': self.nit,
+            'type_contractor': self.type_contractor,
+            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
+        }
+        return item
+
 
 class FixedContract(models.Model):
     type_contract = models.CharField(max_length=20, default="FIJO")
@@ -53,6 +65,17 @@ class FixedContract(models.Model):
     # def toJSON(self):
     #     contract = model_to_dict(self)
     #     return contract
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'type_contract': self.type_contract,
+            'contractor_by': {'id': self.contractor_by.id, 'name': self.contractor_by.name_entity},
+            'contractor_for': {'id': self.contractor_for.id, 'name': self.contractor_for.name_entity},
+            'start_date': self.start_date.strftime('%Y-%m-%d'),
+            'end_date': self.end_date.strftime('%Y-%m-%d'),
+            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
+        }
+        return item
 
     class Meta:
         ordering = ('created_at',)
@@ -86,6 +109,28 @@ class OccasionalContract(models.Model):
 
     class Meta:
         db_table = 'occasional_contract'
+
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'contractor_by': self.contractor_by,
+            'nit': self.nit,
+            'address': self.address,
+            'city': self.city,
+            'name_contact': self.name_contact,
+            'phone_contact': self.phone_contact,
+            'destiny': self.destiny,
+            'hour_service': self.hour_service,
+            'date_service': self.date_service.strftime('%Y-%m-%d'),
+            'capacity': self.capacity,
+            'date_departure': self.date_departure.strftime('%Y-%m-%d'),
+            'date_arrival': self.date_arrival.strftime('%Y-%m-%d'),
+            'nro_spreadsheet': self.nro_spreadsheet,
+            'reservation': self.reservation,
+            'observations': self.observations,
+            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
+        }
+        return item
 
 
 class Spreadsheet(models.Model):

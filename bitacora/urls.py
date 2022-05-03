@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include("django.contrib.auth.urls")),
+    path('', include("main.urls", namespace="main")),
     path('contracts/', include("contratos.urls", namespace="contracts")),
     path('services/', include("services.urls", namespace="services")),
     path('administremos/', include("administremos.urls", namespace="administremos")),

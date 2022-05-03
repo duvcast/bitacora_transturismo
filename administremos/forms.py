@@ -55,18 +55,15 @@ class DriverReliefForm(forms.ModelForm):
 
     class Meta:
         model = ReliefDriver
+
         fields = ('driver', 'relief', 'start_date', 'end_date')
 
 
 class NoveltyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['bus'].widget.attrs.update({'class': 'form-control'})
-        self.fields['start_date'].widget.attrs.update({'class': 'form-control'})
-        self.fields['end_hour'].widget.attrs.update({'class': 'form-control'})
-        self.fields['end_date'].widget.attrs.update({'class': 'form-control'})
-        self.fields['end_hour'].widget.attrs.update({'class': 'form-control'})
-        self.fields['description'].widget.attrs.update({'class': 'form-control'})
+        for form in self.visible_fields():
+            form.field.widget.attrs['class'] = 'form-control'
 
     start_date = forms.DateField(widget=DatePickerInput)
     end_date = forms.DateField(widget=DatePickerInput)
@@ -108,5 +105,16 @@ class NoveltyForm(forms.ModelForm):
 
     class Meta:
         model = Novelty
-        fields = ('bus', 'start_date', 'start_hour', 'end_date', 'end_hour',
+        # TODO: this labels doesnt work
+        labels = {
+            'bus': 'Bus',
+            'start_date': 'Fecha Inicio',
+            'end_date': 'Fecha Final',
+            'start_hour': 'Hora inicio',
+            'end_hour': 'Hora Fin',
+            'description': 'Descripcion',
+        }
+        fields = ('bus', 'start_date', 'end_date', 'start_hour', 'end_hour',
                   'description')
+
+

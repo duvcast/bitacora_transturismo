@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ('first_name', 'last_name')
 
     def __str__(self):
-        return self.email
+        return f'{self.first_name} {self.last_name}'
 
     def has_perm(self, perm, obj=None):
         """Does the user have a specific permission?"""

@@ -4881,7 +4881,7 @@ var widgetsAccordion = $.widget( "ui.accordion", {
 			easing = options;
 		}
 
-		// fall back from options to animation in case of partial down settings
+		// fall back from options to animation in case of partials down settings
 		easing = easing || options.easing || animate.easing;
 		duration = duration || options.duration || animate.duration;
 

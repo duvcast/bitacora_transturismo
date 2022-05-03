@@ -15,6 +15,8 @@ class Bus(models.Model):
     brand = models.CharField(max_length=100, null=True)
     model = models.CharField(max_length=100, null=True)
     driver = models.ForeignKey('Driver', on_delete=models.SET_NULL, related_name='bus', null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="bus_driver",
+                                   verbose_name="created by", null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
@@ -24,12 +26,31 @@ class Bus(models.Model):
     def __str__(self):
         return f"{self.code} - {self.name}"
 
+    def check_driver(self):
+        return {'id': self.driver.id, 'name': self.driver.name, } if self.driver else {'id': '',
+                                                                                       'name': 'No asignado', }
+
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'name': self.name,
+            'code': self.code,
+            'plate': self.plate,
+            'brand': self.brand,
+            'model': self.model,
+            'driver': self.check_driver(),
+
+        }
+        return item
+
 
 class ReliefBus(models.Model):
     bus = models.ForeignKey('Bus', on_delete=models.CASCADE, verbose_name="bus", related_name="relief_bus")
     relief = models.ForeignKey('Bus', on_delete=models.CASCADE, verbose_name="bus", related_name="bus_relief")
     start_date = models.DateTimeField(verbose_name="start date", null=True, blank=True)
     end_date = models.DateTimeField(verbose_name="end date", null=True, blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="bus_relief",
+                                   verbose_name="created by", null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
@@ -38,6 +59,16 @@ class ReliefBus(models.Model):
 
     def __str__(self):
         return self.bus
+
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'bus': {'id': self.bus.id, 'name': self.bus.name},
+            'relief': {'id': self.relief.id, 'name': self.relief.name},
+            'start_date': self.start_date.strftime('%Y-%m-%d'),
+            'end_date': self.end_date.strftime('%Y-%m-%d'),
+        }
+        return item
 
 
 class Driver(models.Model):
@@ -55,6 +86,17 @@ class Driver(models.Model):
     def __str__(self):
         return self.name
 
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'driver': {'id': self.id_driver,
+                       'name': self.name,
+                       },
+            'code': self.code,
+            'nro_identification': self.nro_identification,
+        }
+        return item
+
 
 #
 class ReliefDriver(models.Model):
@@ -62,6 +104,8 @@ class ReliefDriver(models.Model):
     relief = models.ForeignKey('Driver', on_delete=models.CASCADE, verbose_name="driver", related_name="driver_relief")
     start_date = models.DateTimeField(verbose_name="start date", null=True, blank=True)
     end_date = models.DateTimeField(verbose_name="end date", null=True, blank=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name="driver_relief",
+                                   verbose_name="created by", null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
@@ -70,6 +114,17 @@ class ReliefDriver(models.Model):
 
     def __str__(self):
         return self.driver
+
+    # def model_to_json(self):
+    #     item = {
+    #         'id_relief_driver': self.id,
+    #         'relief': {'id': self.relief.id,
+    #                    'name': self.relief.name,
+    #                    },
+    #         'start_date': self.start_date.strftime('%Y-%m-%d'),
+    #         'end_date': self.end_date.strftime('%Y-%m-%d'),
+    #     }
+    #     return item
 
 
 class Novelty(models.Model):
@@ -89,6 +144,21 @@ class Novelty(models.Model):
 
     def __str__(self):
         return self.description
+
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'bus': {'id': self.bus.id,
+                    'name': f'({self.bus.code})-{self.bus.name}',
+                    },
+            'start_hour': self.start_hour,
+            'end_hour': self.end_hour,
+            'start_date': self.start_date.strftime('%Y-%m-%d'),
+            'end_date': self.end_date.strftime('%Y-%m-%d'),
+            'description': self.description,
+            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
+        }
+        return item
 
 
 class DetectionMode(models.Model):

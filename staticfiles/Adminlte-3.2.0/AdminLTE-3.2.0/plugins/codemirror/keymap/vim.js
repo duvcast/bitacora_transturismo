@@ -844,7 +844,7 @@
        *
        * Finds a command based on the key (and cached keys if there is a
        * multi-key sequence). Returns `undefined` if no key is matched, a noop
-       * function if a partial match is found (multi-key), and a function to
+       * function if a partials match is found (multi-key), and a function to
        * execute the bound command if a a key is matched. The function always
        * returns true.
        */
