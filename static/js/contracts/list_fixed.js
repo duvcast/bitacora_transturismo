@@ -1,5 +1,6 @@
 var tableList;
 
+
 function getDataTable() {
     tableList = $('#table-list').DataTable({
         ajax: {
@@ -75,7 +76,8 @@ $(function () {
             parameters.append('action', 'delete');
             parameters.append('id', data.id);
             submitDataAjax(window.location.pathname, parameters, '#modal-fixed-contract');
-        });
+        })
+
     $('#form-fixed-contract').on('submit', function (e) {
         e.preventDefault();
         var parametersFixed = new FormData(this);
