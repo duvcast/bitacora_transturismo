@@ -57,7 +57,7 @@ class FixedContract(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
 
     def __str__(self):
-        return f"{self.contractor_by}"
+        return f"{self.contractor_for.name_entity}"
 
     # def get_absolute_url(self):
     #     return reverse('', kwargs={'pk': self.pk})

@@ -2,239 +2,233 @@
 {% load static %}
 {% block title %}PLANILLA {% endblock %}
 {% block content %}
-    <div class="wrapper" id="content_contracts">
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <div class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6">
-                            <h1 class="m-0">Planilla</h1>
-                        </div><!-- /.col -->
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">planilla</li>
-                            </ol>
-                        </div><!-- /.col -->
-                    </div><!-- /.row -->
-                </div><!-- /.container-fluid -->
-            </div>
-            <!-- /.content-header -->
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    <h5 class="mb-2">PLANILLA DIA DE HOY</h5>
-                    <div class="row">
-                        <div class="col-md-2 col-sm-6 col-12">
-                            <div class="info-box bg-info">
-                                <div class="info-box-content">
-                                    <span class="info-box-text">CONTRATOS FIJOS</span>
-                                    <span class="info-box-number">{{ fixed_contracts|length }}</span>
-                                </div>
 
-                            </div>
-
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-12">
-                            <div class="info-box bg-info">
-                                <div class="info-box-content">
-                                    <span class="info-box-text">CONTRATOS OCASIONALES</span>
-                                    <span class="info-box-number">{{ occasional_contracts|length }}</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-12">
-                            <div class="info-box bg-info">
-                                <div class="info-box-content">
-                                    <span class="info-box-text">CONTRATANTES</span>
-                                    <span class="info-box-number">{{ contractors_by|length }}</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-12">
-                            <div class="info-box bg-info">
-                                <div class="info-box-content">
-                                    <span class="info-box-text">CONTRATISTAS</span>
-                                    <span class="info-box-number">{{ contractors_for|length }}</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-12">
-                            <div class="info-box bg-info">
-                                <div class="info-box-content">
-                                    <span class="info-box-text">BUSES</span>
-                                    <span class="info-box-number">{{ buses|length }}</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-12">
-                            <div class="info-box bg-info">
-                                <div class="info-box-content">
-                                    <span class="info-box-text">RELEVO BUSES</span>
-                                    <span class="info-box-number">{{ relief_buses|length }}</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-12">
-                            <div class="info-box bg-info">
-                                <div class="info-box-content">
-                                    <span class="info-box-text">CONDUCTORES</span>
-                                    <span class="info-box-number">{{ drivers|length }}</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-12">
-                            <div class="info-box bg-info">
-                                <div class="info-box-content">
-                                    <span class="info-box-text">RELEVOS CONDUCTORES</span>
-                                    <span class="info-box-number">{{ relief_drivers|length }}</span>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <h3>CONTRATOS</h3>
-                    <div class="row">
-                        {% for fixed_contract in fixed_contracts %}
-                            <div class="col-md-4">
-                                <div class="card card-success">
-                                    <div class="card-header">
-                                        <h3 class="card-title">{{ fixed_contract.contractor_for }}
-                                            | {{ fixed_contract.start_date|date:"SHORT_DATE_FORMAT" }}
-                                            | {{ fixed_contract.end_date|date:"SHORT_DATE_FORMAT" }}</h3>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                                    class="fas fa-minus"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="card-body" style="display: block;">
-                                        <div class="inline-block">
-                                            Tipo de Contrato: {{ fixed_contract.type_contract }}
-                                        </div>
-                                        <div class="inline-block">
-                                            {% for service in fixed_contract.services_contract.all %}
-                                                <p>NOMBRE: {{ service.route_name }}</p>
-                                                {% for schedule in service.schedules_service.all %}
-                                                    <span>TIPO: {{ schedule.type_schedule }}</span>
-                                                    <span>HORA INICIO: {{ schedule.start_hour }}</span>
-                                                    <span>HORA FINAL: {{ schedule.end_hour }}</span>
-                                                {% endfor %}
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <h3>RELEVO BUSES</h3>
-                    <div class="row">
-                        {% for relief in relief_buses %}
-                            <div class="col-md-4">
-                                <div class="card card-primary">
-                                    <div class="card-header">
-                                        <h3 class="card-title">{{ relief.bus }}
-                                            - {{ relief.start_date|date:"SHORT_DATE_FORMAT" }}
-                                            - {{ relief.end_date|date:"SHORT_DATE_FORMAT" }}</h3>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                                    class="fas fa-minus"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="card-body" style="display: block;">
-                                        <div class="inline-block">
-                                            BUS RELEVO: {{ relief.relief }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <h3>RELEVO CONDUCTORES</h3>
-                    <div class="row">
-                        {% for relief in relief_drivers %}
-                            <div class="col-md-4">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h3 class="card-title">{{ relief.driver }}
-                                            - {{ relief.start_date|date:"SHORT_DATE_FORMAT" }}
-                                            - {{ relief.end_date|date:"SHORT_DATE_FORMAT" }}</h3>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                                    class="fas fa-minus"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="card-body" style="display: block;">
-                                        <div class="inline-block">
-                                            CONDUCTOR RELEVO: {{ relief.relief }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                    <h3>NOVEDADES</h3>
-                    <div class="row">
-                        {% for novelty in novelties %}
-                            <div class="col-md-4">
-                                <div class="card card-info">
-                                    <div class="card-header">
-                                        <h3 class="card-title">{{ novelty.bus }}
-                                            - {{ novelty.start_date|date:"SHORT_DATE_FORMAT" }}
-                                            - {{ novelty.end_date|date:"SHORT_DATE_FORMAT" }}</h3>
-                                        <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
-                                                    class="fas fa-minus"></i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="card-body" style="display: block;">
-                                        <div class="inline-block">
-                                            DESCRIPCION: {{ novelty.description }}
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </section>
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Planilla</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">planilla</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
         </div><!-- /.container-fluid -->
-
-        <!-- /.content -->
-
-        <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
-            <i class="fas fa-chevron-up"></i>
-        </a>
     </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <h5 class="mb-2">PLANILLA DIA DE HOY</h5>
+            <div class="row">
+                <div class="col-md-2 col-sm-6 col-12">
+                    <div class="info-box bg-info">
+                        <div class="info-box-content">
+                            <span class="info-box-text">CONTRATOS FIJOS</span>
+                            <span class="info-box-number">{{ fixed_contracts|length }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-2 col-sm-6 col-12">
+                    <div class="info-box bg-info">
+                        <div class="info-box-content">
+                            <span class="info-box-text">CONTRATOS OCASIONALES</span>
+                            <span class="info-box-number">{{ occasional_contracts|length }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-2 col-sm-6 col-12">
+                    <div class="info-box bg-info">
+                        <div class="info-box-content">
+                            <span class="info-box-text">CONTRATANTES</span>
+                            <span class="info-box-number">{{ contractors_by|length }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-2 col-sm-6 col-12">
+                    <div class="info-box bg-info">
+                        <div class="info-box-content">
+                            <span class="info-box-text">CONTRATISTAS</span>
+                            <span class="info-box-number">{{ contractors_for|length }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-2 col-sm-6 col-12">
+                    <div class="info-box bg-info">
+                        <div class="info-box-content">
+                            <span class="info-box-text">BUSES</span>
+                            <span class="info-box-number">{{ buses|length }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-2 col-sm-6 col-12">
+                    <div class="info-box bg-info">
+                        <div class="info-box-content">
+                            <span class="info-box-text">RELEVO BUSES</span>
+                            <span class="info-box-number">{{ relief_buses|length }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-2 col-sm-6 col-12">
+                    <div class="info-box bg-info">
+                        <div class="info-box-content">
+                            <span class="info-box-text">CONDUCTORES</span>
+                            <span class="info-box-number">{{ drivers|length }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-md-2 col-sm-6 col-12">
+                    <div class="info-box bg-info">
+                        <div class="info-box-content">
+                            <span class="info-box-text">RELEVOS CONDUCTORES</span>
+                            <span class="info-box-number">{{ relief_drivers|length }}</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <h3>CONTRATOS</h3>
+            <div class="row">
+                {% for fixed_contract in fixed_contracts %}
+                    <div class="col-md-4">
+                        <div class="card card-success">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ fixed_contract.contractor_for }}
+                                    | {{ fixed_contract.start_date|date:"SHORT_DATE_FORMAT" }}
+                                    | {{ fixed_contract.end_date|date:"SHORT_DATE_FORMAT" }}</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                            class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="card-body" style="display: block;">
+                                <div class="inline-block">
+                                    Tipo de Contrato: {{ fixed_contract.type_contract }}
+                                </div>
+                                <div class="inline-block">
+                                    {% for service in fixed_contract.services_contract.all %}
+                                        <p>NOMBRE: {{ service.route_name }}</p>
+                                        {% for schedule in service.schedules_service.all %}
+                                            <span>TIPO: {{ schedule.type_schedule }}</span>
+                                            <span>HORA INICIO: {{ schedule.start_hour }}</span>
+                                            <span>HORA FINAL: {{ schedule.end_hour }}</span>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <h3>RELEVO BUSES</h3>
+            <div class="row">
+                {% for relief in relief_buses %}
+                    <div class="col-md-4">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ relief.bus }}
+                                    - {{ relief.start_date|date:"SHORT_DATE_FORMAT" }}
+                                    - {{ relief.end_date|date:"SHORT_DATE_FORMAT" }}</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                            class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="card-body" style="display: block;">
+                                <div class="inline-block">
+                                    BUS RELEVO: {{ relief.relief }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <h3>RELEVO CONDUCTORES</h3>
+            <div class="row">
+                {% for relief in relief_drivers %}
+                    <div class="col-md-4">
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ relief.driver }}
+                                    - {{ relief.start_date|date:"SHORT_DATE_FORMAT" }}
+                                    - {{ relief.end_date|date:"SHORT_DATE_FORMAT" }}</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                            class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="card-body" style="display: block;">
+                                <div class="inline-block">
+                                    CONDUCTOR RELEVO: {{ relief.relief }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <h3>NOVEDADES</h3>
+            <div class="row">
+                {% for novelty in novelties %}
+                    <div class="col-md-4">
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h3 class="card-title">{{ novelty.bus }}
+                                    - {{ novelty.start_date|date:"SHORT_DATE_FORMAT" }}
+                                    - {{ novelty.end_date|date:"SHORT_DATE_FORMAT" }}</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                                            class="fas fa-minus"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                            <div class="card-body" style="display: block;">
+                                <div class="inline-block">
+                                    DESCRIPCION: {{ novelty.description }}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
+    </a>
     <!-- /.content-wrapper -->
     <!-- ./wrapper -->
 

@@ -11,6 +11,7 @@ class DatePickerInput(forms.DateInput):
 class ServiceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['contract'].widget.attrs.update({'class': 'form-control'})
         self.fields['route_name'].widget.attrs.update({'class': 'form-control'})
         self.fields['start_date'].widget.attrs.update({'class': 'form-control'})
         self.fields['end_date'].widget.attrs.update({'class': 'form-control'})
@@ -27,7 +28,7 @@ class ServiceForm(forms.ModelForm):
 
     class Meta:
         model = Service
-        fields = ('route_name', 'start_date', 'end_date',)
+        fields = ('contract', 'route_name', 'start_date', 'end_date',)
 
 
 class ScheduleForm(forms.ModelForm):

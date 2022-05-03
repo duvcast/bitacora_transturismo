@@ -72,7 +72,6 @@ class OccasionalContractView(TemplateView):
         data = {}
         try:
             action = request.POST['action']
-            print(request.POST)
             if action == 'list':
                 data = []
                 for i in OccasionalContract.objects.all().order_by('-created_at'):
@@ -106,6 +105,7 @@ class OccasionalContractView(TemplateView):
         context['btn_action'] = 'Crear Contrato'
         context['form'] = OccasionalContractForm
         return context
+
 
 class UserContractsView(TemplateView):
     model = UserContractor
@@ -152,8 +152,6 @@ class UserContractsView(TemplateView):
         context['btn_action'] = 'Crear Usuario'
         context['form'] = USerContractForm
         return context
-
-
 
 
 @login_required

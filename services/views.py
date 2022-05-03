@@ -1,12 +1,60 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 # Create your views here.
 from django.urls import reverse_lazy, reverse
-from django.views.generic import DeleteView, UpdateView
+from django.utils.decorators import method_decorator
+from django.views.generic import DeleteView, UpdateView, TemplateView
 
 from services.forms import ServiceForm, ScheduleForm
 from services.models import Service, Schedule
+
+
+class ServiceView(TemplateView):
+    model = Service
+    template_name = 'services/services/services.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'list':
+                data = []
+                for i in Service.objects.all().order_by('-created_at'):
+                    data.append(i.model_to_json())
+            elif action == 'add':
+                form = ServiceForm(request.POST)
+                if form.is_valid():
+                    new_form = form.save(commit=False)
+                    new_form.created_by = request.user
+                    new_form.save()
+                else:
+                    data['error'] = form.errors
+            elif action == 'edit':
+                service = Service.objects.get(pk=request.POST['id'])
+                form = ServiceForm(request.POST, instance=service)
+                if form.is_valid():
+                    form.save()
+                else:
+                    data['error'] = form.errors
+            elif action == 'delete':
+                service = Service.objects.get(pk=request.POST['id'])
+                service.delete()
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['btn_action'] = 'Crear Servicio'
+        context['form'] = ServiceForm
+        return context
 
 
 @login_required
@@ -47,35 +95,3 @@ def detail_service(request, pk):
         'form': form,
     }
     return render(request, "services/details_service.html", context)
-
-
-class UpdateServiceView(UpdateView):
-    model = Service
-    form_class = ServiceForm
-    template_name = "services/update_service.html"
-    success_url = reverse_lazy('services:index')
-
-
-class ServiceDeleteView(DeleteView):
-    model = Service
-    template_name = 'services/delete_services.html'
-
-    def get_success_url(self):
-        pk = self.kwargs["pk"]
-        return reverse("contract:detail_contract_fixed", kwargs={"pk": pk})
-
-
-# class UpdateScheduleView(UpdateView):
-#     model = Schedule
-#     form_class = ScheduleForm
-#     template_name = "services/update_schedule.html"
-#     success_url = reverse_lazy('services:index')
-
-
-class DeleteScheduleView(DeleteView):
-    model = Schedule
-    template_name = 'services/delete_schedule.html'
-
-    def get_success_url(self):
-        pk = self.kwargs["pk"]
-        return reverse("services:detail_service", kwargs={"pk": pk})
