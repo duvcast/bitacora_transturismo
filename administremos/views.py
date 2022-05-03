@@ -99,7 +99,7 @@ class ReliefBusView(TemplateView):
 
 
 class DriversView(TemplateView):
-    model = ReliefDriver
+    model = Driver
     template_name = 'administremos/drivers/drivers.html'
 
     @method_decorator(login_required)
@@ -114,24 +114,6 @@ class DriversView(TemplateView):
                 data = []
                 for i in Driver.objects.all().order_by('-created_at'):
                     data.append(i.model_to_json())
-            elif action == 'add':
-                form = DriverReliefForm(request.POST)
-                if form.is_valid():
-                    new_form = form.save(commit=False)
-                    new_form.created_by = request.user
-                    new_form.save()
-                else:
-                    data['error'] = form.errors
-            elif action == 'edit':
-                bus_relief = ReliefBus.objects.get(pk=request.POST['id'])
-                form = BusReliefForm(request.POST, instance=bus_relief)
-                if form.is_valid():
-                    form.save()
-                else:
-                    data['error'] = form.errors
-            elif action == 'delete':
-                bus_relief = ReliefBus.objects.get(pk=request.POST['id'])
-                bus_relief.delete()
             else:
                 data['error'] = 'No ha ingresado a ninguna opción'
         except Exception as e:
@@ -145,23 +127,51 @@ class DriversView(TemplateView):
         return context
 
 
-@login_required()
-def buses_relief(request):
-    if request.method == "POST":
-        form = BusReliefForm(request.POST)
-        print(form)
-        if form.is_valid():
-            print("Relevo de bus Guardado")
-            form.save()
-            return redirect('administremos:relief_buses')
-    else:
-        form = BusReliefForm()
-    reliefs = ReliefBus.objects.all()
-    context = {
-        'reliefs_buses': reliefs,
-        'form': form,
-    }
-    return render(request, 'administremos/buses/relief_bus.html', context)
+class ReliefDriversView(TemplateView):
+    model = ReliefDriver
+    template_name = 'administremos/drivers/relief_driver.html'
+
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'list':
+                data = []
+                for i in ReliefDriver.objects.all().order_by('-created_at'):
+                    data.append(i.model_to_json())
+            elif action == 'add':
+                form = DriverReliefForm(request.POST)
+                if form.is_valid():
+                    new_form = form.save(commit=False)
+                    new_form.created_by = request.user
+                    new_form.save()
+                else:
+                    data['error'] = form.errors
+            elif action == 'edit':
+                relief_driver = ReliefDriver.objects.get(pk=request.POST['id'])
+                form = DriverReliefForm(request.POST, instance=relief_driver)
+                if form.is_valid():
+                    form.save()
+                else:
+                    data['error'] = form.errors
+            elif action == 'delete':
+                relief_driver = ReliefDriver.objects.get(pk=request.POST['id'])
+                relief_driver.delete()
+            else:
+                data['error'] = 'No ha ingresado a ninguna opción'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['btn_action'] = 'Crear Relevo'
+        context['form'] = DriverReliefForm
+        return context
 
 
 @login_required()

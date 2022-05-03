@@ -28,7 +28,7 @@ class Bus(models.Model):
 
     def check_driver(self):
         return {'id': self.driver.id, 'name': self.driver.name, } if self.driver else {'id': '',
-                                                                                       'name': 'No asignado', }
+                                                                                       'name': 'No Asignado', }
 
     def model_to_json(self):
         item = {
@@ -67,6 +67,7 @@ class ReliefBus(models.Model):
             'relief': {'id': self.relief.id, 'name': self.relief.name},
             'start_date': self.start_date.strftime('%Y-%m-%d'),
             'end_date': self.end_date.strftime('%Y-%m-%d'),
+            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
         }
         return item
 
@@ -77,6 +78,8 @@ class Driver(models.Model):
     code = models.CharField(max_length=100, null=True)
     id_driver = models.CharField(max_length=50, null=True)
     nro_identification = models.CharField(max_length=50, null=True)
+    # This field is for performance and features systems only
+    has_relief = models.BooleanField(default=False, verbose_name="has relief?")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="fecha de creacion")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="fecha de actualización")
 
@@ -113,18 +116,18 @@ class ReliefDriver(models.Model):
         db_table = "relief_driver"
 
     def __str__(self):
-        return self.driver
+        return self.driver.name
 
-    # def model_to_json(self):
-    #     item = {
-    #         'id_relief_driver': self.id,
-    #         'relief': {'id': self.relief.id,
-    #                    'name': self.relief.name,
-    #                    },
-    #         'start_date': self.start_date.strftime('%Y-%m-%d'),
-    #         'end_date': self.end_date.strftime('%Y-%m-%d'),
-    #     }
-    #     return item
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'driver': {'id': self.driver.id, 'name': self.driver.name},
+            'relief': {'id': self.relief.id, 'name': self.relief.name},
+            'start_date': self.start_date.strftime('%Y-%m-%d'),
+            'end_date': self.end_date.strftime('%Y-%m-%d'),
+            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
+        }
+        return item
 
 
 class Novelty(models.Model):
