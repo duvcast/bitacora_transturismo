@@ -49,7 +49,7 @@ class Service(models.Model):
 
     class Meta:
         db_table = 'service'
-        ordering = ('created_at',)
+        ordering = ('-created_at',)
 
     def __str__(self):
         return self.route_name
@@ -78,9 +78,9 @@ class Schedule(models.Model):
     start_hour = models.TimeField(default=dt.time(00, 00), verbose_name="end hour")
     end_hour = models.TimeField(default=dt.time(00, 00), verbose_name="end hour")
     quantity_fleet = models.IntegerField(verbose_name="quantity fleet", default=1)
-    day = models.CharField(max_length=2, verbose_name="day")
     service = models.ForeignKey("Service", on_delete=models.CASCADE, related_name="schedules_service")
     bus = models.ForeignKey(Bus, on_delete=models.DO_NOTHING, related_name="schedule", verbose_name="bus", null=True)
+    day = models.ManyToManyField('Day', related_name="schedule_day")  # fisrt model name plus field relationship
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
                                    related_name="schedules_author", verbose_name="created by", null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
@@ -91,3 +91,28 @@ class Schedule(models.Model):
 
     class Meta:
         db_table = 'schedule'
+        ordering = ('-created_at',)
+
+
+class Day(models.Model):
+    name = models.CharField(max_length=20, verbose_name="name day")
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,
+                                   related_name="days_author", verbose_name="created by", null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
+
+    class Meta:
+        db_table = 'day'
+        ordering = ('-created_at',)
+
+    def __str__(self):
+        return self.name
+
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'name': self.name,
+            'service': self.service.model_to_json(),
+            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
+        }
+        return item

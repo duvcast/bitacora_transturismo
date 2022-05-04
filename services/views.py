@@ -1,10 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
-# Create your views here.
-from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import DeleteView, UpdateView, TemplateView
+from django.views.generic import TemplateView
 
 from services.forms import ServiceForm, ScheduleForm
 from services.models import Service, Schedule
@@ -55,23 +53,6 @@ class ServiceView(TemplateView):
         context['btn_action'] = 'Crear Servicio'
         context['form'] = ServiceForm
         return context
-
-
-@login_required
-def index(request):
-    if request.is_ajax and request.method == 'POST':
-        form = ServiceForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('ok')
-    else:
-        form = ServiceForm()
-    services = Service.objects.all().order_by('-created_at')
-    context = {
-        "services": services,
-        'form': form
-    }
-    return render(request, 'services/index.html', context)
 
 
 @login_required
