@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ('first_name', 'last_name')
 
     def __str__(self):
-        return self.email
+        return f'{self.first_name} {self.last_name}'
 
     def has_perm(self, perm, obj=None):
         """Does the user have a specific permission?"""
@@ -70,6 +70,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
+    class Meta:
+        db_table = 'user'
+
 
 class Manager(models.Model):
     first_name = models.CharField(max_length=150, verbose_name="first name")
@@ -79,3 +82,6 @@ class Manager(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+    class Meta:
+        db_table = 'manager'

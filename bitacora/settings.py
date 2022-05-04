@@ -17,6 +17,8 @@ from pathlib import Path
 # from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.urls import reverse
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -28,9 +30,7 @@ SECRET_KEY = "qevma4a-m0yp^a1jbei-j@-(ltq1^91eozqm#o)ptcctb=eff#"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = "True"
 
-
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # third party apis
     'tempus_dominus',
     'widget_tweaks',
+    'django_htmx',
 
     # Local apps
     'main.apps.MainConfig',
@@ -91,19 +92,25 @@ WSGI_APPLICATION = 'bitacora.wsgi.application'
 
 
 DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            # 'NAME': 'transturismo',
-            'NAME': 'transturismo',
-            'USER': 'doadmin',
-            # 'HOST': 'tuffi.db.elephantsql.com',
-            'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
-            # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
-            'PORT': '25060',
-            # 'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
-            'PASSWORD': 'irrunras87percbh'
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        # 'NAME': 'transturismo',
+        'NAME': 'juadznqy',
+        # 'NAME': 'transturismo',
+        # 'USER': 'doadmin',
+        # 'USER': 'melius',
+        'USER': 'juadznqy',
+        # 'HOST': 'localhost',
+        'HOST': 'tuffi.db.elephantsql.com',
+        # 'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
+        # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
+        # 'PORT': '25060',
+        # 'PORT': '5432',
+        # 'PASSWORD': 'amunozro8970',
+        'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
+        # 'PASSWORD': 'irrunras87percbh'
     }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -154,5 +161,6 @@ AUTH_USER_MODEL = "users.User"
 TEMPUS_DOMINUS_LOCALIZE = True
 TEMPUS_DOMINUS_TIME_FORMAT = 'HH:mm'
 
-LOGIN_REDIRECT_URL = "/contracts/fixed"
+LOGIN_REDIRECT_URL = "/administremos/novelties-list/"
+LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/login/"

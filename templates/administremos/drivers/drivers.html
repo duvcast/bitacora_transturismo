@@ -1,0 +1,25 @@
+{% extends 'table_data.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %}
+    Conductores
+{% endblock %}
+{% block head_table %}
+    <script src="{% static 'js/driver/list_driver.js' %}"></script>
+{% endblock %}
+{% block button_add %}
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th>id</th>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Código</th>
+        <th>N° Identificación</th>
+    </tr>
+{% endblock %}
+{% block rows %}
+
+{% endblock %}
+

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'vendor/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet"
+          href="{% static 'vendor/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'vendor/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'vendor/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+
+    {#    <link rel="stylesheet" href="{% static 'vendor/datatable/DataTables-1.11.5/css/dataTables.bootstrap4.min.css' %}">#}
+    {#    <link rel="stylesheet"#}
+    {#          href="{% static 'vendor/datatable/DataTables-1.11.5/Responsive-2.2.9/css/responsive.bootstrap4.min.css' %}">#}
+    {##}
+    {#    <script src="{% static 'vendor/datatable/DataTables-1.11.5/js/jquery.dataTables.js' %}"></script>#}
+    {#    <script src="{% static 'vendor/datatable/DataTables-1.11.5/js/dataTables.bootstrap4.min.js' %}"></script>#}
+    {#    <script src="{% static 'vendor/datatable/DataTables-1.11.5/Responsive-2.2.9/js/dataTables.responsive.min.js' %}"></script>#}
+    {#    <script src="{% static 'vendor/datatable/DataTables-1.11.5/Responsive-2.2.9/js/responsive.bootstrap4.min.js' %}"></script>#}
+    {#    <script src="{% static 'vendor/datatable/DataTables-1.11.5/js/dataTables.bootstrap4.min.js' %}"></script>#}
+
+    {% block head_table %}
+
+    {% endblock %}
+{% endblock %}
+{% block content %}
+    <div class="card card-default">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-list"></i>
+                {{ title_card }}
+            </h3>
+            {#            <a class="btn btn-primary float-right" href="{{ create_novelty_url }}"><i#}
+            {#                    class="fas fa-plus"></i> {{ btn_action }}</a>#}
+
+            {% block button_add %}
+                <button class="btn btn-primary float-right " id="btn-add"><i class="fas fa-plus"></i> {{ btn_action }}
+                </button>
+            {% endblock %}
+
+        </div>
+        <div class="card-body">
+            <table id="table-list" class="table table-bordered table-striped w-100">
+                <thead>
+                {% block columns %}
+
+                {% endblock %}
+                </thead>
+                <tbody>
+                {% block rows %}
+
+                {% endblock %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,81 @@
+{% extends 'table_data.html' %}
+{% load static %}
+{% block title %}Buses{% endblock %}
+{% load widget_tweaks %}
+
+{% block head_table %}
+    <script src="{% static 'js/bus/list.js' %}"></script>
+{% endblock %}
+{% block button_add %}
+
+{% endblock %}
+
+{% block columns %}
+    <tr>
+        <th>id</th>
+        <th>Nombre</th>
+        <th>Código</th>
+        <th>Placa</th>
+        <th>Marca</th>
+        <th>Modelo</th>
+        <th>Conductor Asignado</th>
+        <th>Acciones</th>
+    </tr>
+{% endblock %}
+{% block rows %}
+
+{% endblock %}
+{% block modals %}
+    <!-- XDSoft DateTimePicker -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+          integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    {# Django Tempus Dominus assets are included in `{{ form.media }}` #}
+    {{ form.media }}
+    <!-- Modal -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="modal fade" id="modal-bus" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <h5 class="modal-title " id="exampleModalLongTitle">Nueva Asociasion</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="." method="post" id="form-bus">
+                                    <input name="action" type="hidden" value="add">
+                                    <input name="id" id="id" type="hidden" value="0">
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <label for="inputName">Bus</label>
+                                            {{ form.name|add_class:"disabled"|attr:'readonly' }}
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="inputName">Conductor</label>
+                                            {{ form.driver }}
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <input type="submit" value="Asignar Conductor"
+                                                   class="btn btn-primary float-right">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

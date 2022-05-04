@@ -5,9 +5,10 @@ from . import views
 app_name = "administremos"
 
 urlpatterns = [
-    path('', views.index, name="index"),
-    path('buses/', views.bus, name="buses"),
-    path('empleados/', views.empleado, name="empleados"),
-    path('bus_drivers/', views.bus_driver, name="bus_drivers"),
-
+    path('', views.get_data, name="index"),
+    path('buses/', views.BusView.as_view(), name="buses"),
+    path('relief-buses/', views.ReliefBusView.as_view(), name="relief_buses"),
+    path('drivers/', views.DriversView.as_view(), name="drivers"),
+    path('relief-drivers/', views.ReliefDriversView.as_view(), name="relief_drivers"),
+    path('novelties/', views.NoveltyView.as_view(), name="novelties"),
 ]

@@ -1,0 +1,167 @@
+{% extends 'table_data.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block head_table %}
+    <script src="{% static 'js/contracts/list_users.js' %}"></script>
+{% endblock %}
+{#{% block button_add_aux %}#}
+{#    <button class="btn btn-primary float-right mr-4" id="btn-add-fixed-contract"><i class="fas fa-plus"></i> Crear#}
+{#        Usuario#}
+{#    </button>#}
+{#{% endblock %}#}
+
+{% block columns %}
+    <tr>
+        <th>id</th>
+        <th>Entidad</th>
+        <th>Telefono</th>
+        <th>Extension</th>
+        <th>NIt</th>
+        <th>Rol</th>
+        <th>Creado por</th>
+        <th>Acciones</th>
+    </tr>
+{% endblock %}
+{% block rows %}
+
+{% endblock %}
+{% block modals %}
+    <!-- XDSoft DateTimePicker -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+          integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    {# Django Tempus Dominus assets are included in `{{ form.media }}` #}
+    {{ form.media }}
+    <!-- Modal -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="modal fade" id="modal-user-contract" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <h5 class="modal-title " id="exampleModalLongTitle">Nuevo Contrato</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" id="form-user-contract"
+                                      action="{% url 'contracts:users_contracts' %}">
+                                    {% csrf_token %}
+                                    <input name="action" type="hidden" value="add">
+                                    <input name="id" id="id" type="hidden" value="0">
+                                    <div class="form-row">
+                                        <div class="form-group col-12">
+                                            <label for="inputStatus">Nombre de la Entidad</label>
+                                            {{ form.name_entity }}
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <label for="inputClientCompany">Telefono</label>
+                                            {{ form.phone }}
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="inputClientCompany">Extension</label>
+                                            {{ form.extension }}
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <label for="inputProjectLeader">NIT</label>
+                                            {{ form.nit }}
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="inputProjectLeader">Role</label>
+                                            {{ form.type_contractor }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <input type="submit" value="Crear Usuario"
+                                                   class="btn btn-primary float-right">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% comment %}<div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="modal fade" id="modal-user-contractor" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <h5 class="modal-title " id="exampleModalLongTitle">Nuevo Contrato</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" id="form-user-contractor"
+                                      action="{% url 'contracts:users_contract' %}">
+                                    {% csrf_token %}
+                                    <input name="action" type="hidden" value="add">
+                                    <input name="id" id="id" type="hidden" value="0">
+                                    <div class="form-row">
+                                        <div class="form-group col-12">
+                                            <label for="inputStatus">Nombre de la Entidad</label>
+                                            {{ form_uc.name_entity }}
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <label for="inputClientCompany">Telefono</label>
+                                            {{ form_uc.phone }}
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="inputClientCompany">Extension</label>
+                                            {{ form_uc.extension }}
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-6">
+                                            <label for="inputProjectLeader">NIT</label>
+                                            {{ form_uc.nit }}
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="inputProjectLeader">Role</label>
+                                            {{ form_uc.type_contractor }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="submit"
+                                                    class="btn btn-primary float-right" formnovalidate="formnovalidate">
+                                                Crear Usuario
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>{% endcomment %}
+
+
+{% endblock %}
