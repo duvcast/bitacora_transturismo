@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 
 from .forms import BusDriverForm, DriverReliefForm, NoveltyForm, BusReliefForm
 from .models import Bus, Driver, Novelty, ReliefDriver, ReliefBus
-from .services import get_buses
+from .services import get_buses, get_driver
 
 
 class BusView(TemplateView):
@@ -174,35 +174,6 @@ class ReliefDriversView(TemplateView):
         return context
 
 
-@login_required()
-def driver(request):
-    get_buses()
-    drivers = Driver.objects.all()
-    context = {
-        'drivers': drivers,
-    }
-    return render(request, 'administremos/drivers/drivers.html', context)
-
-
-@login_required()
-def drivers_relief(request):
-    if request.method == "POST":
-        form = DriverReliefForm(request.POST)
-        print(form)
-        if form.is_valid():
-            print("Relevo Guardado")
-            form.save()
-            return redirect('administremos:relief_drivers')
-    else:
-        form = DriverReliefForm()
-    reliefs = ReliefDriver.objects.all()
-    context = {
-        'reliefs': reliefs,
-        'form': form,
-    }
-    return render(request, 'administremos/drivers/relief_driver.html', context)
-
-
 class NoveltyView(TemplateView):
     model = Novelty
     template_name = 'administremos/novelty/novelty.html'
@@ -250,3 +221,9 @@ class NoveltyView(TemplateView):
         context['btn_action'] = 'Crear Novedad'
         context['form'] = NoveltyForm()
         return context
+
+
+def get_data(request):
+    get_buses()
+    get_driver()
+    return HttpResponse('ok')

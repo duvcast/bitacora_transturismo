@@ -75,12 +75,12 @@ class Schedule(models.Model):
     ]
     type_schedule = models.CharField(max_length=30, choices=TYPE_SCHEDULE, default=DEPARTURE,
                                      verbose_name="schedule type")
-    start_hour = models.TimeField(default=dt.time(00, 00), verbose_name="end hour")
+    start_hour = models.TimeField(default=dt.time(00, 00), verbose_name="start hour")
     end_hour = models.TimeField(default=dt.time(00, 00), verbose_name="end hour")
     quantity_fleet = models.IntegerField(verbose_name="quantity fleet", default=1)
     service = models.ForeignKey("Service", on_delete=models.CASCADE, related_name="schedules_service")
     bus = models.ForeignKey(Bus, on_delete=models.DO_NOTHING, related_name="schedule", verbose_name="bus", null=True)
-    day = models.ManyToManyField('Day', related_name="schedule_day")  # fisrt model name plus field relationship
+    days = models.ManyToManyField('Day', related_name="schedule_day")  # fisrt model name plus field relationship
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
                                    related_name="schedules_author", verbose_name="created by", null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
@@ -92,6 +92,18 @@ class Schedule(models.Model):
     class Meta:
         db_table = 'schedule'
         ordering = ('-created_at',)
+
+    def model_to_json(self):
+        item = {
+            'id': self.id,
+            'name': self.type_schedule,
+            'start_hour': self.start_hour,
+            'end_hour': self.end_hour,
+            'quantity_fleet': self.quantity_fleet,
+            'bus': self.bus.model_to_json(),
+            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
+        }
+        return item
 
 
 class Day(models.Model):
@@ -112,7 +124,5 @@ class Day(models.Model):
         item = {
             'id': self.id,
             'name': self.name,
-            'service': self.service.model_to_json(),
-            'created_by': f'{self.created_by.first_name} {self.created_by.last_name}',
         }
         return item

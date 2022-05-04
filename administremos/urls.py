@@ -5,6 +5,7 @@ from . import views
 app_name = "administremos"
 
 urlpatterns = [
+    path('', views.get_data, name="index"),
     path('buses/', views.BusView.as_view(), name="buses"),
     path('relief-buses/', views.ReliefBusView.as_view(), name="relief_buses"),
     path('drivers/', views.DriversView.as_view(), name="drivers"),

@@ -1,7 +1,7 @@
 from django import forms
 from tempus_dominus.widgets import TimePicker
 
-from .models import Service, Schedule
+from .models import Service, Schedule, Day
 
 
 class DatePickerInput(forms.DateInput):
@@ -32,6 +32,10 @@ class ServiceForm(forms.ModelForm):
 
 
 class ScheduleForm(forms.ModelForm):
+    class Meta:
+        model = Schedule
+        fields = ('type_schedule', 'start_hour', 'end_hour', 'bus', 'days')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -40,6 +44,10 @@ class ScheduleForm(forms.ModelForm):
         self.fields['end_hour'].widget.attrs.update({'class': 'form-control'})
         self.fields['bus'].widget.attrs.update({'class': 'form-control'})
 
+    days = forms.ModelMultipleChoiceField(
+        queryset=Day.objects.all(),
+        widget=forms.CheckboxSelectMultiple()
+    )
     start_hour = forms.TimeField(
         widget=TimePicker(
             options={
@@ -67,7 +75,3 @@ class ScheduleForm(forms.ModelForm):
         if end_hour < start_hour:
             raise forms.ValidationError("La Hora final no puede ser menor a la inicial")
         return end_hour
-
-    class Meta:
-        model = Schedule
-        fields = ('type_schedule', 'start_hour', 'end_hour', 'bus')

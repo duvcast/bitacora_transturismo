@@ -95,6 +95,13 @@ class OccasionalContractForm(forms.ModelForm):
             },
         ), )
 
+    def clean_date_arrival(self):
+        date_departure = self.cleaned_data['date_departure']
+        date_arrival = self.cleaned_data['date_arrival']
+        if date_arrival < date_departure:
+            raise forms.ValidationError("La Fecha de llegada no puede ser menor a la de salida")
+        return date_arrival
+
     class Meta:
         model = OccasionalContract
         fields = ('contractor_by', 'nit', 'address', 'city', 'name_contact',
