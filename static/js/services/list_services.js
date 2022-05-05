@@ -12,7 +12,7 @@ function getDataTable() {
         },
         columns: [
             {'data': 'id'},
-            {'data': 'contract.contractor_for.name'},
+            {'data': 'contract.contractor_by.name'},
             {'data': 'route_name'},
             {'data': 'start_date'},
             {'data': 'end_date'},
@@ -155,7 +155,7 @@ $(function () {
     $('#form-service').on('submit', function (e) {
         e.preventDefault();
         var parametersFixed = new FormData(this);
-        submitDataAjax(window.location.pathname, parametersFixed);
+        submitDataAjax(window.location.pathname, parametersFixed, '#modal-service');
 
     });
     $('#form-schedule').on('submit', function (e) {

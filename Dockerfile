@@ -8,7 +8,10 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 COPY . /code/
 
+# expose the port 8000
+# EXPOSE 8000
 
+# CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000"]
 
 
 # docker-compose -f docker-compose.yml up --build
