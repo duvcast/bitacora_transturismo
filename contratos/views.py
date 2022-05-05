@@ -8,7 +8,7 @@ from administremos.models import Driver, Bus, ReliefBus, ReliefDriver, Novelty
 from contratos.forms import FixedContractForm, OccasionalContractForm, USerContractForm
 from contratos.models import FixedContract, OccasionalContract, UserContractor
 from services.forms import ServiceForm
-from services.models import Service
+from services.models import Service, Schedule
 
 
 class FixedContractView(TemplateView):
@@ -156,25 +156,23 @@ class UserContractsView(TemplateView):
 
 @login_required
 def spreadsheet(request):
-    contractors_for = UserContractor.objects.filter(type_contractor__iexact='CONTRATISTA')
-    contractors_by = UserContractor.objects.filter(type_contractor__iexact='CONTRATANTE')
     fixed_contracts = FixedContract.objects.all().order_by('-created_by')
     occasional_contracts = OccasionalContract.objects.all().order_by('-created_at')
-    buses = Bus.objects.all().order_by('-created_at')
+    services = Service.objects.all().order_by('-created_at')
+    schedules = Schedule.objects.all().order_by('-created_at')
     drivers = Driver.objects.all().order_by('-created_at')
     relief_buses = ReliefBus.objects.all().order_by('-created_at')
     relief_drivers = ReliefDriver.objects.all().order_by('-created_at')
     novelties = Novelty.objects.all().order_by('-created_at')
     context = {
-        'contractors_for': contractors_for,
-        'contractors_by': contractors_by,
-        'fixed': fixed_contracts,
+        'fixed_contracts': fixed_contracts,
         'occasional_contracts': occasional_contracts,
-        'buses': buses,
+        'services': services,
+        'schedules': schedules,
         'drivers': drivers,
         'relief_buses': relief_buses,
         'relief_drivers': relief_drivers,
         'novelties': novelties,
 
     }
-    return render(request, 'contratos/spreadsheet.html', context)
+    return render(request, 'contratos/spreadsheet/spreadsheet.html', context)
