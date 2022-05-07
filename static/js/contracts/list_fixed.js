@@ -12,8 +12,8 @@ function getDataTable() {
         columns: [
             {'data': 'id'},
             {'data': 'type_contract'},
-            {'data': 'contractor_by.name'},
             {'data': 'contractor_for.name'},
+            {'data': 'contractor_by.name'},
             {'data': 'start_date'},
             {'data': 'end_date'},
             {'data': 'created_by'},
@@ -62,8 +62,8 @@ $(function () {
             var data = tableList.row(tr.row).data();
             $('input[name="action"]').val('edit');
             $('input[name="id"]').val(data.id);
-            $('select[name="contractor_by"]').val(data.contractor_by.id);
             $('select[name="contractor_for"]').val(data.contractor_for.id);
+            $('select[name="contractor_by"]').val(data.contractor_by.id);
             $('input[name="start_date"]').val(data.start_date);
             $('input[name="end_date"]').val(data.end_date);
             $('#modal-fixed-contract').modal('show');

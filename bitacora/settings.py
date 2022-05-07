@@ -94,21 +94,21 @@ WSGI_APPLICATION = 'bitacora.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'transturismo',
+        # 'NAME': 'juadznqy',
         # 'NAME': 'transturismo',
-        'NAME': 'juadznqy',
-        # 'NAME': 'transturismo',
-        # 'USER': 'doadmin',
+        'USER': 'doadmin',
         # 'USER': 'melius',
-        'USER': 'juadznqy',
+        # 'USER': 'juadznqy',
         # 'HOST': 'localhost',
-        'HOST': 'tuffi.db.elephantsql.com',
-        # 'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
+        # 'HOST': 'tuffi.db.elephantsql.com',
+        'HOST': 'db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
         # 'HOST': 'private-db-postgresql-sfo3-transturismo-do-user-4477223-0.b.db.ondigitalocean.com',
-        # 'PORT': '25060',
+        'PORT': '25060',
         # 'PORT': '5432',
         # 'PASSWORD': 'amunozro8970',
-        'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
-        # 'PASSWORD': 'irrunras87percbh'
+        # 'PASSWORD': '0tvUjzhaPc3Zk4giMHLCKei-ysVYWLo1'
+        'PASSWORD': 'irrunras87percbh'
     }
 }
 
@@ -161,6 +161,6 @@ AUTH_USER_MODEL = "users.User"
 TEMPUS_DOMINUS_LOCALIZE = True
 TEMPUS_DOMINUS_TIME_FORMAT = 'HH:mm'
 
-LOGIN_REDIRECT_URL = "/administremos/novelties-list/"
+LOGIN_REDIRECT_URL = "/contracts/spreadsheet/"
 LOGIN_URL = "/login/"
 LOGOUT_REDIRECT_URL = "/login/"

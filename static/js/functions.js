@@ -36,8 +36,9 @@ function submitDataAjax(url, parameters, idModal) {
     }).done(function (data) {
         console.log(data);
         if (!data.hasOwnProperty('error')) {
-            $(idModal).modal('hide');
+            $(idModal).modal('hide')
             tableList.ajax.reload();
+            tableScheduleList.ajax.reload();
             return false;
         }
         message_error(data.error);

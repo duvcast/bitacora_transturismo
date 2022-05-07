@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}PLANILLA {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{% static 'vendor/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet"
+          href="{% static 'vendor/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static 'vendor/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'vendor/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'vendor/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+{% endblock %}
+{% block content %}
+
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Planilla</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">planilla</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card card-transparent" role="tabpanel">
+                        <!-- Nav tabs-->
+                        <ul class="nav nav-tabs nav-fill" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active bb0" href="#buses" aria-controls="table" role="tab"
+                                   data-toggle="tab">
+                                    <em class="fas fa-address-card fa-fw"></em>Informacion Buses</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link bb0" href="#contracts" aria-controls="table2" role="tab"
+                                   data-toggle="tab">
+                                    <em class="fas fa-eraser fa-fw"></em>Informacion Contratos</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link bb0" href="#services" aria-controls="info" role="tab"
+                                   data-toggle="tab">
+                                    <em class="fas fa-id-card-alt fa-fw"></em>Información Servicios</a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link bb0" href="#drivers" aria-controls="graph" role="tab"
+                                   data-toggle="tab">
+                                    <em class="fas fa-chart-pie fa-fw"></em>Informacion Conductores</a>
+                            </li>
+
+                        </ul>
+                        <!-- Tab panes-->
+                        <div class="tab-content p-0 bg-white">
+                            <div class="tab-pane active" id="buses" role="tabpanel">
+                                <div class="row" style="width:1675px; height:20px;">
+                                </div>
+                                <div class="col-lg-12" style="width:100%; height:100%;">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div>
+                                                    <h2 class="h2 mb-3">Relevos</h2>
+                                                    <table id="table-relief-buses"
+                                                           class="table table-bordered table-striped w-100">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Bus</th>
+                                                            <th>Relevo</th>
+                                                            <th>Fecha Inicio</th>
+                                                            <th>Fecha Fin</th>
+                                                            <th>Creado Por</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        {% for bus in relief_buses %}
+                                                            <tr>
+                                                                <td>{{ bus.bus.name }}</td>
+                                                                <td>{{ bus.relief.name }}</td>
+                                                                <td>{{ bus.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ bus.end_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ bus.created_by.get_full_name }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div>
+                                                    <h2 class="h2 mb-3">Novedades</h2>
+                                                    <table id="table-novelties"
+                                                           class="table table-bordered table-striped w-100">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Bus</th>
+                                                            <th>Fecha Inicio</th>
+                                                            <th>Fecha Fin</th>
+                                                            <th>Hora Inicio</th>
+                                                            <th>Hora Final</th>
+                                                            <th>Descripcion</th>
+                                                            <th>Creado Por</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for novelty in novelties %}
+                                                            <tr>
+                                                                <td>{{ novelty.bus.name }}</td>
+                                                                <td>{{ novelty.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ novelty.end_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ novelty.start_hour }}</td>
+                                                                <td>{{ novelty.end_hour }}</td>
+                                                                <td>{{ novelty.description }}</td>
+                                                                <td>{{ novelty.created_by.get_full_name }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="contracts" role="tabpanel">
+                                <div class="row" style="width:1675px; height:20px;">
+                                </div>
+                                <div class="col-lg-12" style="width:100%; height:100%;">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div>
+                                                    <h2 class="h2 mb-3">Contratos Fijos Vigentes</h2>
+                                                    <table id="table-fixed-contracts"
+                                                           class="table table-bordered table-striped w-100">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Tipo Contrato</th>
+                                                            <th>Contratista</th>
+                                                            <th>Contratante</th>
+                                                            <th>Fecha Inicio</th>
+                                                            <th>Fecha Fin</th>
+                                                            <th>Creado Por</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        {% for fixed in fixed_contracts %}
+                                                            <tr>
+                                                                <td>{{ fixed.type_contract }}</td>
+                                                                <td>{{ fixed.contractor_for.name_entity }}</td>
+                                                                <td>{{ fixed.contractor_by.name_entity }}</td>
+                                                                <td>{{ fixed.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ fixed.end_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ fixed.created_by.get_full_name }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div>
+                                                    <h2 class="h2 mb-3">Contratos Ocasionales Vigentes</h2>
+                                                    <table id="table-occasional-contracts"
+                                                           class="table table-bordered table-striped w-100">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Contratante</th>
+                                                            <th>NIT</th>
+                                                            <th>Direccion</th>
+                                                            <th>Ciudad</th>
+                                                            <th>Contacto</th>
+                                                            <th>Telefono</th>
+                                                            <th>Destino</th>
+                                                            <th>Hora</th>
+                                                            <th>Fecha</th>
+                                                            <th>Capacidad</th>
+                                                            <th>Salida</th>
+                                                            <th>Llegada</th>
+                                                            <th>Planilla</th>
+                                                            <th>Reserva</th>
+                                                            <th>Observacion</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for ocasional in occasional_contracts %}
+                                                            <tr>
+                                                                <td>{{ ocasional.contractor_by }}</td>
+                                                                <td>{{ ocasional.nit }}</td>
+                                                                <td>{{ ocasional.address }}</td>
+                                                                <td>{{ ocasional.city }}</td>
+                                                                <td>{{ ocasional.name_contact }}</td>
+                                                                <td>{{ ocasional.phone_contact }}</td>
+                                                                <td>{{ ocasional.destiny }}</td>
+                                                                <td>{{ ocasional.hour_service }}</td>
+                                                                <td>{{ ocasional.date_service|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ ocasional.capacity }}</td>
+                                                                <td>{{ ocasional.date_departure|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ ocasional.date_arrival|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ ocasional.nro_spreadsheet }}</td>
+                                                                <td>{{ ocasional.reservation }}</td>
+                                                                <td>{{ ocasional.observations }}</td>
+                                                                <td>{{ ocasional.created_by.get_full_name }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="services" role="tabpanel">
+                                <div class="row" style="width:1675px; height:20px;">
+                                </div>
+                                <div class="col-lg-12" style="width:100%; height:100%;">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div>
+                                                    <h2 class="h2 mb-3">Servicios</h2>
+                                                    <table id="table-services"
+                                                           class="table table-bordered table-striped w-100">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Contrato</th>
+                                                            <th>Nombre</th>
+                                                            <th>Fecha Inicio</th>
+                                                            <th>Fecha Fin</th>
+                                                            <th>Creado Por</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+
+                                                        {% for service in services %}
+                                                            <tr>
+                                                                <td>{{ service.contract.contractor_by.name_entity }}</td>
+                                                                <td>{{ service.route_name }}</td>
+                                                                <td>{{ service.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ service.end_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ service.created_by.get_full_name }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <br>
+                                                <br>
+                                                <div>
+                                                    <h2 class="h2 mb-3">Horarios</h2>
+                                                    <table id="table-schedules"
+                                                           class="table table-bordered table-striped w-100">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Contrato</th>
+                                                            <th>Nombre Servicio</th>
+                                                            <th>TIPO</th>
+                                                            <th>BUS</th>
+                                                            <th>Hora Inicio</th>
+                                                            <th>Hora Fin</th>
+                                                            <th>Cantidad Flota</th>
+                                                            <th>Creado Por</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for schedule in schedules %}
+                                                            <tr>
+                                                                <td>{{ schedule.service.contract.contractor_by.name_entity }}</td>
+                                                                <td>{{ schedule.service.route_name }}</td>
+                                                                <td>{{ schedule.bus.name }}</td>
+                                                                <td>{{ schedule.bus.name }}</td>
+                                                                <td>{{ schedule.start_hour }}</td>
+                                                                <td>{{ schedule.end_hour }}</td>
+                                                                <td>{{ schedule.quantity_fleet }}</td>
+                                                                <td>{{ schedule.created_by.get_full_name }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="tab-pane" id="drivers" role="tabpanel">
+                                <div class="row" style="width:1675px; height:20px;">
+                                </div>
+                                <div class="col-lg-12" style="width:100%; height:100%;">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <div>
+                                                    <h2 class="h2 mb-3">Relevos</h2>
+                                                    <table id="table-relief-drivers"
+                                                           class="table table-bordered table-striped w-100">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Nombre Conductor</th>
+                                                            <th>Nombre Relevo</th>
+                                                            <th>Fecha Inicio Relevo</th>
+                                                            <th>Fecha Fin Relevo</th>
+                                                            <th>Creado Por</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for relief in relief_drivers %}
+                                                            <tr>
+                                                                <td>{{ relief.driver.name }}</td>
+                                                                <td>{{ relief.relief.name }}</td>
+                                                                <td>{{ relief.start_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ relief.end_date|date:"SHORT_DATE_FORMAT" }}</td>
+                                                                <td>{{ relief.created_by.get_full_name }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+            <i class="fas fa-chevron-up"></i>
+        </a>
+        <!-- /.content-wrapper -->
+        <!-- ./wrapper -->
+        {% block javascript %}
+            <script>
+                $(function () {
+                    $('#table-relief-buses').DataTable({
+                        responsive: true,
+                        destroy: true,
+                    });
+                    $('#table-novelties').DataTable({
+                        responsive: true,
+                        destroy: true,
+                    });
+                    $('#table-fixed-contracts').DataTable({
+                        responsive: true,
+                        destroy: true,
+                    });
+                    $('#table-occasional-contracts').DataTable({
+                        responsive: true,
+                        destroy: true,
+                    });
+                    $('#table-services').DataTable({
+                        responsive: true,
+                        destroy: true,
+                    });
+                    $('#table-schedules').DataTable({
+                        responsive: true,
+                        destroy: true,
+                    });
+                    $('#table-relief-drivers').DataTable({
+                        responsive: true,
+                        destroy: true,
+                    });
+
+                });
+            </script>
+        {% endblock %}
+{% endblock %}

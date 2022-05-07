@@ -1,5 +1,5 @@
 var tableList;
-
+var tableScheduleList;
 
 function getDataTable() {
     tableList = $('#table-list').DataTable({
@@ -12,7 +12,7 @@ function getDataTable() {
         },
         columns: [
             {'data': 'id'},
-            {'data': 'contract.contractor_for.name'},
+            {'data': 'contract.contractor_by.name'},
             {'data': 'route_name'},
             {'data': 'start_date'},
             {'data': 'end_date'},
@@ -126,7 +126,7 @@ $(function () {
             var parameters = new FormData();
             parameters.append('action', 'delete');
             parameters.append('id', data.id);
-            submitDataAjax(window.location.pathname, parameters, '#modal-service');
+            submitDataAjax(window.location.pathname, parameters);
         })
 
 
@@ -149,10 +149,8 @@ $(function () {
             var parameters = new FormData();
             parameters.append('action', 'delete_schedule');
             parameters.append('id', data.id);
-            submitDataAjax(window.location.pathname, parameters, '#modal-service');
-            tableScheduleList.ajax.reload();
+            submitDataAjax(window.location.pathname, parameters);
         })
-
 
     $('#form-service').on('submit', function (e) {
         e.preventDefault();

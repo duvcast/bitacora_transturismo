@@ -70,18 +70,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
+    @property
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
+
     class Meta:
         db_table = 'user'
-
-
-class Manager(models.Model):
-    first_name = models.CharField(max_length=150, verbose_name="first name")
-    last_name = models.CharField(max_length=150, verbose_name="last name")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="created at")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
-
-    def __str__(self):
-        return f"{self.first_name} {self.last_name}"
-
-    class Meta:
-        db_table = 'manager'

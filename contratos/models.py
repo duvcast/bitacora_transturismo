@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 from django.forms import model_to_dict
 
-from users.models import Manager
 
 
 class UserContractor(models.Model):
@@ -57,7 +56,7 @@ class FixedContract(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="updated at")
 
     def __str__(self):
-        return f"{self.contractor_for.name_entity}"
+        return f"{self.contractor_by.name_entity}"
 
     # def get_absolute_url(self):
     #     return reverse('', kwargs={'pk': self.pk})
